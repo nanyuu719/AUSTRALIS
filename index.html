@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Sky World</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: #020207;
+    font-family: serif;
+}
+
+/* 第一幕 */
+
+.scene-one {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(ellipse at center,
+        #171625 0%, #080811 45%, #010104 100%);
+    z-index: 2;
+    transition: opacity 2s ease;
+}
+
+.scene-one.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.character {
+    position: relative;
+    width: 180px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: float 4s ease-in-out infinite;
+}
+
+.character svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-7px); }
+}
+
+.candle-button {
+    position: absolute;
+    right: 2px;
+    top: 112px;
+    width: 48px;
+    height: 85px;
+    cursor: pointer;
+    z-index: 5;
+    background: transparent;
+    border: none;
+}
+
+.candle-glow {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: -25px;
+    top: -25px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+        rgba(255,202,104,0) 0%,
+        rgba(255,190,80,0) 45%,
+        transparent 75%);
+    transition: 1.2s;
+    pointer-events: none;
+}
+
+.candle-button.lit .candle-glow {
+    background: radial-gradient(circle,
+        rgba(255,231,171,.85) 0%,
+        rgba(255,190,80,.35) 35%,
+        transparent 75%);
+    transform: scale(1.8);
+}
+
+.flame {
+    position: absolute;
+    width: 12px;
+    height: 20px;
+    left: 18px;
+    top: -2px;
+    background: #fff2b7;
+    border-radius: 70% 30% 60% 40%;
+    transform: rotate(45deg);
+    opacity: 0;
+    filter: drop-shadow(0 0 8px #ffcc69);
+    transition: opacity .5s;
+}
+
+.candle-button.lit .flame {
+    opacity: 1;
+    animation: flicker .7s infinite alternate;
+}
+
+@keyframes flicker {
+    from { transform: rotate(38deg) scale(.9); }
+    to { transform: rotate(52deg) scale(1.12); }
+}
+
+.candle {
+    position: absolute;
+    width: 13px;
+    height: 43px;
+    left: 17px;
+    top: 18px;
+    border-radius: 3px 3px 1px 1px;
+    background: linear-gradient(90deg,
+        #7c171c, #e24b4b, #a51e25);
+    box-shadow: inset 2px 0 3px rgba(255,255,255,.2);
+}
+
+.hint {
+    position: absolute;
+    bottom: 12%;
+    color: rgba(255,255,255,.55);
+    font-size: 13px;
+    letter-spacing: 5px;
+    animation: hintFade 2s ease-in-out infinite alternate;
+}
+
+@keyframes hintFade {
+    from { opacity: .3; }
+    to { opacity: .85; }
+}
+
+/* 金色光芒 */
+
+.light-wave {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%) scale(0);
+    background: radial-gradient(circle,
+        #fff7d7 0%,
+        #ffe3a0 12%,
+        rgba(255,193,91,.55) 35%,
+        rgba(255,183,91,.08) 65%,
+        transparent 75%);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.light-wave.expand {
+    animation: expandLight 2.2s ease-out forwards;
+}
+
+@keyframes expandLight {
+    0% {
+        transform: translate(-50%,-50%) scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%,-50%) scale(90);
+        opacity: 0;
+    }
+}
+
+/* 第二幕 */
+
+.scene-two {
+    position: fixed;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    background: #02030b;
+    overflow: hidden;
+    isolation: isolate;
+    z-index: 1;
+    transition: opacity 2.5s ease;
+}
+
+.scene-two.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.galaxy {
+    position: absolute;
+    inset: -5%;
+    z-index: 0;
+    background-image: url("blue.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    transform: scale(1);
+    animation: galaxyZoom 24s ease-in-out infinite alternate;
+    filter: brightness(.78);
+}
+
+@keyframes galaxyZoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.15); }
+}
+
+.blue-mist {
+    position: absolute;
+    inset: -25%;
+    z-index: 1;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at 25% 40%,
+            rgba(28,117,190,.28), transparent 45%),
+        radial-gradient(ellipse at 75% 60%,
+            rgba(53,180,225,.22), transparent 40%),
+        radial-gradient(ellipse at 50% 15%,
+            rgba(110,205,255,.15), transparent 38%);
+    filter: blur(35px);
+    animation: blueMist 18s ease-in-out infinite alternate;
+}
+
+@keyframes blueMist {
+    0% {
+        transform: translate(-3%,2%) scale(1);
+        opacity: .55;
+    }
+    100% {
+        transform: translate(4%,-3%) scale(1.12);
+        opacity: 1;
+    }
+}
+
+.galaxy-ribbon {
+    position: absolute;
+    width: 160%;
+    height: 55%;
+    left: -30%;
+    top: 23%;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(165deg,
+        transparent 15%,
+        rgba(70,174,235,.025) 30%,
+        rgba(115,218,255,.16) 48%,
+        rgba(65,150,225,.07) 58%,
+        transparent 78%);
+    filter: blur(22px);
+    transform: rotate(-12deg);
+    animation: galaxyFlow 17s ease-in-out infinite alternate;
+}
+
+@keyframes galaxyFlow {
+    0% {
+        transform: translateX(-5%) rotate(-12deg);
+        opacity: .45;
+    }
+    100% {
+        transform: translateX(5%) rotate(-7deg);
+        opacity: 1;
+    }
+}
+
+.blue-shimmer {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at 30% 45%,
+            rgba(80,180,255,.12), transparent 55%),
+        radial-gradient(ellipse at 75% 55%,
+            rgba(80,210,255,.10), transparent 50%);
+    animation: shimmer 7s ease-in-out infinite alternate;
+}
+
+@keyframes shimmer {
+    from { opacity: .3; }
+    to { opacity: 1; }
+}
+
+.blue-particles {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.blue-particles span {
+    position: absolute;
+    width: var(--size,3px);
+    height: var(--size,3px);
+    left: var(--x);
+    top: var(--y);
+    border-radius: 50%;
+    background: #c8f0ff;
+    box-shadow:
+        0 0 6px 2px rgba(106,207,255,.75),
+        0 0 15px 4px rgba(52,156,255,.4);
+    animation: particleFloat var(--duration,8s)
+        ease-in-out infinite alternate;
+    animation-delay: var(--delay,0s);
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translate3d(0,0,0) scale(.7);
+        opacity: .15;
+    }
+    50% { opacity: .9; }
+    100% {
+        transform: translate3d(25px,-35px,0) scale(1.3);
+        opacity: .45;
+    }
+}
+
+.galaxy-shade {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    background: linear-gradient(to bottom,
+        rgba(0,0,10,.25),
+        transparent 40%,
+        rgba(0,0,10,.35));
+}
+
+/* 欢迎文字 */
+
+.intro-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 2s ease, transform 2s ease;
+    z-index: 6;
+    pointer-events: none;
+}
+
+.scene-two.show .intro-text {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 1.5s;
+}
+
+.intro-text h1 {
+    font-size: clamp(30px,7vw,54px);
+    font-weight: 300;
+    letter-spacing: 10px;
+    text-shadow: 0 0 20px rgba(150,220,255,.7);
+}
+
+.intro-text p {
+    margin-top: 20px;
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: rgba(255,255,255,.7);
+}
+
+/* 流星 */
+
+.meteor-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.meteor {
+    position: absolute;
+    width: 180px;
+    height: 2px;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(105,190,255,.15),
+        #a9eaff,
+        #fff);
+    border-radius: 50%;
+    filter: drop-shadow(0 0 5px #75cfff)
+            drop-shadow(0 0 12px #409cff);
+    transform: rotate(30deg);
+    opacity: 0;
+    animation: meteorFly 7s linear infinite;
+}
+
+.meteor::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: white;
+    box-shadow:
+        0 0 8px 3px #a9eaff,
+        0 0 18px 5px #409cff;
+}
+
+@keyframes meteorFly {
+    0% {
+        opacity: 0;
+        transform: translate(0,0) rotate(30deg);
+    }
+    5% { opacity: 1; }
+    18% {
+        opacity: 0;
+        transform: translate(280px,160px) rotate(30deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(280px,160px) rotate(30deg);
+    }
+}
+
+.meteor:nth-child(1) {
+    top: 18%;
+    left: 15%;
+    animation-delay: 0s;
+}
+
+.meteor:nth-child(2) {
+    top: 42%;
+    left: 55%;
+    animation-delay: 2.5s;
+    animation-duration: 8s;
+    width: 130px;
+}
+
+.meteor:nth-child(3) {
+    top: 70%;
+    left: 30%;
+    animation-delay: 5s;
+    animation-duration: 9s;
+    width: 160px;
+}
+
+/* 星座轮盘 */
+
+.constellation-viewport {
+    position: absolute;
+    z-index: 8;
+    left: 0;
+    top: 20%;
+    width: 100%;
+    height: 170px;
+    overflow: hidden;
+    touch-action: none;
+    pointer-events: auto;
+}
+
+.constellation-wheel {
+    position: absolute;
+    width: 340px;
+    height: 340px;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%) rotate(0deg);
+    transform-origin: 50% 50%;
+    transition: transform .3s ease-out;
+    touch-action: none;
+}
+
+.constellation-wheel.dragging {
+    transition: none;
+}
+
+.constellation-item {
+    position: absolute;
+    width: 85px;
+    height: 85px;
+    padding: 5px;
+    transform: translate(-50%,-50%);
+    border: 1px solid rgba(150,220,255,.35);
+    border-radius: 50%;
+    background: rgba(5,25,48,.35);
+    filter: drop-shadow(0 0 7px #65caff);
+    cursor: pointer;
+    touch-action: none;
+    transition: background .25s, filter .25s, border-color .25s;
+}
+
+.constellation-item.selected {
+    background: rgba(65,160,220,.45);
+    border-color: #d8f4ff;
+    filter: drop-shadow(0 0 14px #69d5ff);
+}
+
+.constellation-item svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.constellation-item polyline {
+    fill: none;
+    stroke: #a9eaff;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.constellation-item circle {
+    fill: white;
+    filter: drop-shadow(0 0 3px #8cddff);
+}
+
+/* 六个星座：标准圆形排列 */
+
+.constellation-item:nth-child(1) {
+    left: 50%;
+    top: 0%;
+}
+
+.constellation-item:nth-child(2) {
+    left: 93.3%;
+    top: 25%;
+}
+
+.constellation-item:nth-child(3) {
+    left: 93.3%;
+    top: 75%;
+}
+
+.constellation-item:nth-child(4) {
+    left: 50%;
+    top: 100%;
+}
+
+.constellation-item:nth-child(5) {
+    left: 6.7%;
+    top: 75%;
+}
+
+.constellation-item:nth-child(6) {
+    left: 6.7%;
+    top: 25%;
+}
+
+/* 资料面板 */
+
+.constellation-panel {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(82%,340px);
+    padding: 22px;
+    border: 1px solid rgba(160,225,255,.55);
+    border-radius: 18px;
+    background: rgba(5,22,43,.9);
+    color: #e1f5ff;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(65,170,255,.25);
+    backdrop-filter: blur(12px);
+}
+
+.constellation-panel.show {
+    display: block;
+    animation: panelAppear .35s ease;
+}
+
+.constellation-panel h2 {
+    margin-bottom: 12px;
+    color: #bceaff;
+}
+
+.constellation-panel p {
+    line-height: 1.8;
+    font-size: 14px;
+}
+
+.constellation-close {
+    margin-top: 16px;
+    padding: 8px 20px;
+    color: #dff5ff;
+    background: rgba(90,160,210,.25);
+    border: 1px solid rgba(170,225,255,.5);
+    border-radius: 20px;
+}
+
+@keyframes panelAppear {
+    from {
+        opacity: 0;
+        transform: translate(-50%,12px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%,0);
+    }
+}
+
+/* 横屏：轮盘上移并放大 */
+
+/* 横屏：调整轮盘位置和大小 */
+
+@media (orientation: landscape) {
+
+    .galaxy {
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    /* 欢迎文字移到上方 */
+    .intro-text {
+    inset: auto 0 12%;
+    height: 105px;
+    justify-content: center;
+  }
+
+    .intro-text h1 {
+        font-size: clamp(26px, 4vw, 40px);
+    }
+
+    .intro-text p {
+        margin-top: 8px;
+    }
+
+    /* 轮盘显示窗口 */
+    .constellation-viewport {
+        top: 5%;
+        height: 210px;
+        overflow: hidden;
+    }
+
+    /* 轮盘本体 */
+    .constellation-wheel {
+        width: 420px;
+        height: 420px;
+        top: 50px;
+    }
+
+    /* 星座按钮 */
+    .constellation-item {
+        width: 100px;
+        height: 100px;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="scene-one" id="sceneOne">
+    <div class="character">
+        <svg viewBox="0 0 180 300"
+             xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="blackCape" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#090b13"/>
+                    <stop offset="100%" stop-color="#020308"/>
+                </linearGradient>
+            </defs>
+
+            <ellipse cx="88" cy="66" rx="39" ry="43" fill="#030409"/>
+
+            <path d="M54 62 Q55 25 88 22 Q122 25 123 63
+                     Q122 98 88 109 Q55 98 54 62Z"
+                  fill="#030409"/>
+
+            <path d="M65 105 Q88 96 111 105 Q124 116 132 139
+                     L145 225 Q146 245 129 251
+                     Q108 260 88 260 Q65 260 45 251
+                     Q29 245 32 225 L44 139
+                     Q51 116 65 105Z"
+                  fill="url(#blackCape)" stroke="#10121c" stroke-width="2"/>
+
+            <path d="M34 218 Q58 229 88 226 Q119 229 143 218
+                     L145 237 Q119 259 88 260
+                     Q57 259 32 237Z"
+                  fill="#020308"/>
+
+            <path d="M48 126 Q31 137 25 163 Q22 176 31 181
+                     Q39 184 45 171 L63 143Z"
+                  fill="#030409"/>
+
+            <path d="M116 124 Q132 128 140 143 L151 158
+                     Q155 166 148 171 Q141 175 135 165 L119 151Z"
+                  fill="#030409"/>
+
+            <path d="M57 248 Q54 265 48 276 Q47 283 60 284
+                     L78 284 Q83 279 78 273 L79 255Z"
+                  fill="#020308"/>
+
+            <path d="M97 255 Q99 271 96 277 Q95 284 108 284
+                     L126 283 Q132 279 125 273 L119 249Z"
+                  fill="#020308"/>
+        </svg>
+
+        <button class="candle-button" id="candleButton"
+                aria-label="点燃蜡烛">
+            <div class="candle-glow"></div>
+            <div class="flame"></div>
+            <div class="candle"></div>
+        </button>
+    </div>
+
+    <div class="hint">CLICK THE CANDLE</div>
+</div>
+
+<div class="light-wave" id="lightWave"></div>
+
+<div class="scene-two" id="sceneTwo">
+
+    <div class="galaxy"></div>
+    <div class="blue-mist"></div>
+    <div class="galaxy-ribbon"></div>
+    <div class="blue-shimmer"></div>
+
+    <div class="blue-particles">
+        <span style="--x:10%;--y:25%;--size:3px;--duration:7s;"></span>
+        <span style="--x:25%;--y:70%;--size:5px;--duration:9s;--delay:2s;"></span>
+        <span style="--x:42%;--y:35%;--size:2px;--duration:6s;--delay:1s;"></span>
+        <span style="--x:58%;--y:80%;--size:4px;--duration:11s;--delay:3s;"></span>
+        <span style="--x:73%;--y:20%;--size:3px;--duration:8s;--delay:1s;"></span>
+        <span style="--x:88%;--y:55%;--size:5px;--duration:10s;--delay:4s;"></span>
+        <span style="--x:18%;--y:88%;--size:2px;--duration:8s;--delay:2s;"></span>
+        <span style="--x:65%;--y:45%;--size:3px;--duration:7s;--delay:3s;"></span>
+        <span style="--x:35%;--y:15%;--size:4px;--duration:12s;--delay:1s;"></span>
+        <span style="--x:80%;--y:90%;--size:2px;--duration:9s;--delay:5s;"></span>
+        <span style="--x:50%;--y:55%;--size:3px;--duration:10s;--delay:2s;"></span>
+        <span style="--x:8%;--y:60%;--size:4px;--duration:9s;--delay:4s;"></span>
+        <span style="--x:92%;--y:30%;--size:3px;--duration:8s;--delay:2s;"></span>
+        <span style="--x:45%;--y:90%;--size:2px;--duration:11s;--delay:3s;"></span>
+        <span style="--x:28%;--y:45%;--size:3px;--duration:7s;--delay:5s;"></span>
+        <span style="--x:70%;--y:72%;--size:4px;--duration:10s;--delay:1s;"></span>
+    </div>
+
+    <div class="meteor-layer">
+        <div class="meteor"></div>
+        <div class="meteor"></div>
+        <div class="meteor"></div>
+    </div>
+
+    <div class="galaxy-shade"></div>
+
+    <div class="intro-text">
+        <h1>南隅的自介</h1>
+      <p>Sky:the children of the light</p>
+        
+    </div>
+
+    <!-- 星座轮盘 -->
+
+    <div class="constellation-viewport" id="constellationViewport">
+        <div class="constellation-wheel" id="constellationWheel">
+
+            <button class="constellation-item"
+                data-title="关于我"
+              data-page="about.html"
+                data-info="这里是我的个人介绍。">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+
+  <g fill="none"
+     stroke="#dff5ff"
+     stroke-width="1.6"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+
+    <!-- 左边的大羽毛 -->
+    <polyline points="
+      38,37 29,23 20,5
+      19,18 24,31 32,42
+    "/>
+
+    <!-- 右边的大羽毛 -->
+    <polyline points="
+      62,37 71,23 80,5
+      81,18 76,31 68,42
+    "/>
+
+    <!-- 头顶轮廓 -->
+    <polyline points="
+      32,39 35,29 43,23
+      50,25 57,23 65,29 68,39
+    "/>
+
+    <!-- 左侧蓬松头发 -->
+    <polyline points="
+      32,39 24,46 22,60
+      25,74 34,82
+    "/>
+
+    <!-- 右侧蓬松头发 -->
+    <polyline points="
+      68,39 76,46 78,60
+      75,74 66,82
+    "/>
+
+    <!-- 刘海 -->
+    <polyline points="
+      32,39 39,47 45,37
+      51,47 58,37 68,39
+    "/>
+
+    <!-- 下方脸部轮廓 -->
+    <polyline points="
+      34,48 33,66 40,74
+      50,77 60,74 67,66 66,48
+    "/>
+
+  </g>
+
+  <!-- 星点 -->
+  <g fill="#ffffff">
+    <circle cx="20" cy="5" r="2.8"/>
+    <circle cx="19" cy="18" r="2"/>
+    <circle cx="29" cy="23" r="2.2"/>
+    <circle cx="38" cy="37" r="2"/>
+
+    <circle cx="80" cy="5" r="2.8"/>
+    <circle cx="81" cy="18" r="2"/>
+    <circle cx="71" cy="23" r="2.2"/>
+    <circle cx="62" cy="37" r="2"/>
+
+    <circle cx="50" cy="25" r="2.5"/>
+    <circle cx="35" cy="29" r="1.8"/>
+    <circle cx="65" cy="29" r="1.8"/>
+
+    <circle cx="22" cy="60" r="2"/>
+    <circle cx="25" cy="74" r="2"/>
+    <circle cx="34" cy="82" r="2"/>
+
+    <circle cx="78" cy="60" r="2"/>
+    <circle cx="75" cy="74" r="2"/>
+    <circle cx="66" cy="82" r="2"/>
+
+    <circle cx="45" cy="37" r="2"/>
+    <circle cx="58" cy="37" r="2"/>
+    <circle cx="50" cy="77" r="2.5"/>
+  </g>
+
+                </svg>
+            </button>
+
+            <button class="constellation-item"
+                data-title="我的喜好"
+              data-page="likes.html"
+                data-info="这里写我的兴趣和喜欢的东西。">
+                <svg viewBox="0 0 60 60">
+                    <polyline points="30,5 22,17 16,28 25,36 30,49 40,36 47,25 38,17"/>
+                    <circle cx="30" cy="5" r="3"/>
+                    <circle cx="22" cy="17" r="2"/>
+                    <circle cx="38" cy="17" r="2"/>
+                    <circle cx="16" cy="28" r="2"/>
+                    <circle cx="47" cy="25" r="2"/>
+                    <circle cx="25" cy="36" r="2"/>
+                    <circle cx="40" cy="36" r="2"/>
+                    <circle cx="30" cy="49" r="3"/>
+                </svg>
+            </button>
+
+            <button class="constellation-item"
+                data-title="光遇资料"
+              data-page="sky.html"
+                data-info="这里写我的光遇账号资料。">
+                <svg viewBox="0 0 60 60">
+                    <polyline points="30,5 19,16 25,27 30,39 41,27 42,16"/>
+                    <circle cx="30" cy="5" r="3"/>
+                    <circle cx="19" cy="16" r="2"/>
+                    <circle cx="42" cy="16" r="2"/>
+                    <circle cx="25" cy="27" r="2"/>
+                    <circle cx="41" cy="27" r="2"/>
+                    <circle cx="30" cy="39" r="3"/>
+                </svg>
+            </button>
+
+            <button class="constellation-item"
+                data-title="好友介绍"
+              data-page="friends.html"
+                data-info="这里写我的好友介绍。">
+                <svg viewBox="0 0 60 60">
+                    <polyline points="30,5 23,16 30,26 16,35 12,47 30,55 48,47 44,35 30,26"/>
+                    <circle cx="30" cy="5" r="3"/>
+                    <circle cx="23" cy="16" r="2"/>
+                    <circle cx="30" cy="26" r="3"/>
+                    <circle cx="16" cy="35" r="2"/>
+                    <circle cx="44" cy="35" r="2"/>
+                    <circle cx="12" cy="47" r="2"/>
+                    <circle cx="48" cy="47" r="2"/>
+                    <circle cx="30" cy="55" r="3"/>
+                </svg>
+            </button>
+
+            <button class="constellation-item"
+                data-title="旅途记录"
+              data-page=memories.html"
+                data-info="这里放我的光遇截图和回忆。">
+                <svg viewBox="0 0 60 60">
+                    <polyline points="30,5 18,18 12,32 22,40 30,54 38,40 49,32 42,18"/>
+                    <circle cx="30" cy="5" r="3"/>
+                    <circle cx="18" cy="18" r="2"/>
+                    <circle cx="42" cy="18" r="2"/>
+                    <circle cx="30" cy="28" r="3"/>
+                    <circle cx="12" cy="32" r="2"/>
+                    <circle cx="49" cy="32" r="2"/>
+                    <circle cx="22" cy="40" r="2"/>
+                    <circle cx="38" cy="40" r="2"/>
+                    <circle cx="30" cy="54" r="3"/>
+                </svg>
+            </button>
+
+            <button class="constellation-item"
+                data-title="留言板"
+              data-page="message.html"
+                data-info="欢迎来到我的小星球。">
+                <svg viewBox="0 0 60 60">
+                    <polyline points="30,5 20,15 13,29 22,40 30,53 38,40 47,29 40,15"/>
+                    <circle cx="30" cy="5" r="3"/>
+                    <circle cx="20" cy="15" r="2"/>
+                    <circle cx="40" cy="15" r="2"/>
+                    <circle cx="30" cy="27" r="3"/>
+                    <circle cx="13" cy="29" r="2"/>
+                    <circle cx="47" cy="29" r="2"/>
+                    <circle cx="22" cy="40" r="2"/>
+                    <circle cx="38" cy="40" r="2"/>
+                    <circle cx="30" cy="53" r="3"/>
+                </svg>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="constellation-panel" id="constellationPanel">
+        <h2 id="constellationTitle"></h2>
+        <p id="constellationInfo"></p>
+        <button class="constellation-close" id="constellationClose">
+            返回星空
+        </button>
+    </div>
+
+</div>
+
+<script>
+
+/* 蜡烛与场景切换 */
+
+const candleButton = document.getElementById("candleButton");
+const lightWave = document.getElementById("lightWave");
+const sceneOne = document.getElementById("sceneOne");
+const sceneTwo = document.getElementById("sceneTwo");
+
+let hasLit = false;
+
+candleButton.addEventListener("click", function() {
+    if (hasLit) return;
+
+    hasLit = true;
+    candleButton.classList.add("lit");
+
+    setTimeout(function() {
+        lightWave.classList.add("expand");
+    }, 500);
+
+    setTimeout(function() {
+        sceneTwo.classList.add("show");
+        sceneOne.classList.add("hide");
+    }, 1400);
+
+    setTimeout(function() {
+        sceneOne.style.display = "none";
+        lightWave.style.display = "none";
+    }, 3800);
+});
+
+
+/* 星座轮盘 */
+
+const viewport = document.getElementById("constellationViewport");
+const wheel = document.getElementById("constellationWheel");
+const items = document.querySelectorAll(".constellation-item");
+
+const panel = document.getElementById("constellationPanel");
+const panelTitle = document.getElementById("constellationTitle");
+const panelInfo = document.getElementById("constellationInfo");
+const closeButton = document.getElementById("constellationClose");
+
+let rotation = 0;
+let dragging = false;
+let moved = false;
+let suppressClick = false;
+let lastX = 0;
+let activePointer = null;
+
+function updateWheel() {
+    wheel.style.transform =
+        `translateX(-50%) rotate(${rotation}deg)`;
+}
+
+/* 开始拖动 */
+
+viewport.addEventListener("pointerdown", function(e) {
+    if (panel.classList.contains("show")) return;
+
+    dragging = true;
+    moved = false;
+    activePointer = e.pointerId;
+    lastX = e.clientX;
+
+    wheel.classList.add("dragging");
+});
+
+/* 左右滑动旋转 */
+
+window.addEventListener("pointermove", function(e) {
+    if (!dragging || e.pointerId !== activePointer) return;
+
+    const dx = e.clientX - lastX;
+
+    if (Math.abs(dx) > 0.5) {
+        moved = true;
+        rotation += dx * 0.7;
+        lastX = e.clientX;
+        updateWheel();
+    }
+});
+
+/* 松开手指 */
+
+function endDrag(e) {
+    if (!dragging || e.pointerId !== activePointer) return;
+
+    dragging = false;
+    activePointer = null;
+
+    wheel.classList.remove("dragging");
+
+    if (moved) {
+        suppressClick = true;
+
+        rotation = Math.round(rotation / 60) * 60;
+        updateWheel();
+
+        setTimeout(function() {
+            suppressClick = false;
+        }, 350);
+    }
+}
+
+window.addEventListener("pointerup", endDrag);
+window.addEventListener("pointercancel", endDrag);
+
+/* 点击星座 */
+
+/* 点击星座：跳转网页 */
+
+items.forEach(function(item) {
+
+    item.addEventListener("click", function(e) {
+
+        if (suppressClick) {
+            e.preventDefault();
+            return;
+        }
+
+        const page = item.dataset.page;
+
+        if (page) {
+            window.location.href = page;
+        }
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>

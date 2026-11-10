@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUSTRALIS · MEMORIES</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+ --gold:#e8ce91;
+ --gold2:#f5e8c5;
+ --gold3:#927849;
+ --navy:#101d35;
+ --paper:#1a2a43;
+ --paper2:#20334d;
+ --ink:#d6d8df;
+}
+
+body{
+ min-height:100vh;
+ background:#030713;
+ color:var(--gold2);
+ font-family:Georgia,"Noto Serif SC",serif;
+ overflow-x:hidden;
+}
+
+.bg{
+ position:fixed;
+ inset:0;
+ z-index:-3;
+ background:
+ linear-gradient(rgba(2,5,15,.48),rgba(2,5,15,.78)),
+ url("blue.png") center/cover no-repeat;
+}
+
+.glow{
+ position:fixed;
+ inset:0;
+ z-index:-2;
+ pointer-events:none;
+ background:
+ radial-gradient(ellipse at 50% 50%,rgba(51,91,150,.2),transparent 65%),
+ radial-gradient(ellipse at 15% 80%,rgba(37,65,120,.15),transparent 50%);
+}
+
+.stars{
+ position:fixed;
+ inset:0;
+ z-index:-1;
+ overflow:hidden;
+ pointer-events:none;
+}
+
+.stars span{
+ position:absolute;
+ width:2px;
+ height:2px;
+ border-radius:50%;
+ background:#f5e3b5;
+ box-shadow:0 0 9px #e8ce91;
+ animation:twinkle 3s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle{
+ from{opacity:.15;transform:scale(.7)}
+ to{opacity:1;transform:scale(1.5)}
+}
+
+/* HEADER */
+.container{
+ position:relative;
+ z-index:1;
+ padding:24px 30px 45px;
+}
+
+header{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding-bottom:17px;
+ border-bottom:1px solid rgba(232,206,145,.24);
+}
+
+.logo{
+ color:var(--gold);
+ font-size:13px;
+ letter-spacing:5px;
+}
+
+.back{
+ color:#aeb9ca;
+ text-decoration:none;
+ font-size:11px;
+ letter-spacing:2px;
+}
+
+.back:hover{color:var(--gold)}
+
+/* TITLE */
+.heading{
+ text-align:center;
+ padding:34px 10px 20px;
+}
+
+.heading small{
+ color:#a6b6ce;
+ font-size:10px;
+ letter-spacing:6px;
+}
+
+.heading h1{
+ color:var(--gold2);
+ font-size:clamp(29px,5vw,43px);
+ font-weight:normal;
+ letter-spacing:8px;
+ margin-top:12px;
+ text-shadow:0 0 25px rgba(232,206,145,.25);
+}
+
+.heading .ornament{
+ color:var(--gold);
+ margin-top:14px;
+ letter-spacing:9px;
+}
+
+/* BOOK */
+.book-area{
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ padding:20px 0 10px;
+}
+
+.book{
+ position:relative;
+ width:min(760px,92vw);
+ aspect-ratio:1.12 / 1;
+ perspective:2600px;
+ filter:drop-shadow(0 28px 35px rgba(0,0,0,.65));
+}
+
+/* GOLD PAGE EDGES */
+.edge{
+ position:absolute;
+ background:linear-gradient(90deg,#80653a,#ead59d,#a68a50);
+ border:1px solid #8e7445;
+ z-index:0;
+}
+
+.edge.right{
+ top:10px;
+ right:-9px;
+ width:13px;
+ height:calc(100% - 18px);
+ border-radius:0 5px 5px 0;
+ box-shadow:3px 4px 5px rgba(0,0,0,.5);
+}
+
+.edge.bottom{
+ left:10px;
+ bottom:-9px;
+ width:calc(100% - 20px);
+ height:13px;
+ border-radius:0 0 5px 5px;
+ background:linear-gradient(180deg,#e8d49d,#a78b51);
+}
+
+/* BOOK BODY */
+.book-base{
+ position:absolute;
+ inset:0;
+ display:flex;
+ overflow:hidden;
+ border-radius:5px 12px 12px 5px;
+ background:#101d32;
+ border:1px solid #ad9057;
+ box-shadow:
+ inset 0 0 0 5px rgba(232,206,145,.1),
+ inset 0 0 35px rgba(0,0,0,.5);
+}
+
+.book-base:before{
+ content:"";
+ position:absolute;
+ inset:12px;
+ border:1px solid rgba(232,206,145,.2);
+ z-index:2;
+ pointer-events:none;
+}
+
+/* PAGE BACKGROUND */
+.paper{
+ position:relative;
+ width:50%;
+ height:100%;
+ padding:clamp(18px,3.4vw,38px);
+ overflow:hidden;
+ color:var(--ink);
+ background:
+ radial-gradient(ellipse at 50% 45%,rgba(89,119,160,.16),transparent 70%),
+ linear-gradient(90deg,rgba(0,0,0,.2),transparent 20%),
+ var(--paper);
+}
+
+.paper.left{
+ border-right:1px solid rgba(232,206,145,.3);
+ box-shadow:inset -15px 0 20px rgba(0,0,0,.17);
+}
+
+.paper.right{
+ background:
+ radial-gradient(ellipse at 50% 45%,rgba(89,119,160,.16),transparent 70%),
+ linear-gradient(270deg,rgba(0,0,0,.2),transparent 20%),
+ var(--paper2);
+ box-shadow:inset 15px 0 20px rgba(0,0,0,.17);
+}
+
+/* STAR ORNAMENTS */
+.paper:before,
+.flip .front:before,
+.flip .back:before{
+ content:"✧";
+ position:absolute;
+ right:22px;
+ top:17px;
+ color:rgba(232,206,145,.6);
+ font-size:17px;
+}
+
+.corner{
+ position:absolute;
+ width:35px;
+ height:35px;
+ border:1px solid rgba(232,206,145,.3);
+ pointer-events:none;
+}
+
+.corner.tl{
+ top:13px;
+ left:13px;
+ border-right:0;
+ border-bottom:0;
+}
+
+.corner.br{
+ bottom:13px;
+ right:13px;
+ border-left:0;
+ border-top:0;
+}
+
+/* PAGE CONTENT */
+.date{
+ color:#b69b65;
+ font-size:9px;
+ letter-spacing:3px;
+ margin-bottom:17px;
+}
+
+.paper h3,
+.flip h3{
+ font-weight:normal;
+ color:var(--gold2);
+ font-size:clamp(15px,2.5vw,22px);
+ letter-spacing:3px;
+ margin-bottom:16px;
+}
+
+.paper p,
+.flip p{
+ color:#c1cad8;
+ font-size:clamp(10px,1.5vw,13px);
+ line-height:2.25;
+ white-space:pre-line;
+}
+
+.line{
+ width:55px;
+ height:1px;
+ background:linear-gradient(90deg,var(--gold),transparent);
+ margin:17px 0;
+}
+
+.quote{
+ margin-top:23px;
+ padding:12px;
+ border-left:2px solid var(--gold3);
+ background:rgba(232,206,145,.06);
+ color:#c8b98f;
+ font-size:11px;
+ line-height:2;
+ font-style:italic;
+}
+
+.page-number{
+ position:absolute;
+ bottom:18px;
+ left:0;
+ width:100%;
+ text-align:center;
+ color:#b49b68;
+ font-size:9px;
+ letter-spacing:4px;
+}
+
+/* PHOTO */
+.photo{
+ position:relative;
+ width:90%;
+ height:45%;
+ min-height:100px;
+ margin:15px auto;
+ padding:8px;
+ background:#263b57;
+ border:1px solid rgba(232,206,145,.6);
+ box-shadow:0 8px 18px rgba(0,0,0,.35);
+ transform:rotate(-1deg);
+}
+
+.photo-inner{
+ width:100%;
+ height:100%;
+ border:1px dashed rgba(232,206,145,.35);
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ gap:10px;
+ color:#aab9cc;
+ font-size:10px;
+ letter-spacing:2px;
+ text-align:center;
+ background:
+ radial-gradient(circle,rgba(89,119,160,.2),transparent 70%),
+ #1a2b43;
+}
+
+.photo-inner span{
+ color:var(--gold);
+ font-size:28px;
+}
+
+.photo-inner img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+}
+
+/* FLIP SHEETS */
+.flip{
+ position:absolute;
+ top:0;
+ left:50%;
+ width:50%;
+ height:100%;
+ transform-origin:left center;
+ transform-style:preserve-3d;
+ transition:transform 1s cubic-bezier(.65,0,.35,1);
+}
+
+.flip.flipped{
+ transform:rotateY(-180deg);
+}
+
+.flip .front,
+.flip .back{
+ position:absolute;
+ inset:0;
+ padding:clamp(18px,3.4vw,38px);
+ overflow:hidden;
+ backface-visibility:hidden;
+ background:
+ radial-gradient(ellipse at 50% 45%,rgba(89,119,160,.16),transparent 70%),
+ linear-gradient(90deg,rgba(0,0,0,.17),transparent 20%),
+ var(--paper);
+ color:var(--ink);
+ box-shadow:inset 10px 0 20px rgba(0,0,0,.2);
+}
+
+.flip .back{
+ transform:rotateY(180deg);
+ background:
+ radial-gradient(ellipse at 50% 45%,rgba(89,119,160,.16),transparent 70%),
+ linear-gradient(270deg,rgba(0,0,0,.17),transparent 20%),
+ var(--paper2);
+ box-shadow:inset -10px 0 20px rgba(0,0,0,.2);
+}
+
+/* COVER */
+.cover{
+ position:absolute;
+ inset:0;
+ z-index:30;
+ transform-origin:left center;
+ transform-style:preserve-3d;
+ backface-visibility:hidden;
+ transition:transform 1.2s cubic-bezier(.65,0,.35,1);
+ cursor:pointer;
+ border:2px solid #b89a5e;
+ border-radius:5px 13px 13px 5px;
+ background:
+ radial-gradient(ellipse at 50% 38%,rgba(76,117,175,.36),transparent 58%),
+ linear-gradient(135deg,#203b60,#0b172d 65%,#1a2d4b);
+ box-shadow:
+ inset 0 0 0 7px rgba(232,206,145,.1),
+ inset 0 0 45px rgba(0,0,0,.65),
+ 7px 9px 0 #080f1c,
+ 12px 17px 30px rgba(0,0,0,.5);
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ text-align:center;
+}
+
+.cover.open{
+ transform:rotateY(-180deg);
+ pointer-events:none;
+}
+
+.cover:before{
+ content:"";
+ position:absolute;
+ inset:15px;
+ border:1px solid rgba(232,206,145,.55);
+ pointer-events:none;
+}
+
+.cover:after{
+ content:"";
+ position:absolute;
+ inset:23px;
+ border:1px solid rgba(232,206,145,.16);
+ pointer-events:none;
+}
+
+.cover-top{
+ color:var(--gold);
+ font-size:10px;
+ letter-spacing:6px;
+ margin-bottom:22px;
+}
+
+.emblem{
+ width:105px;
+ height:105px;
+ border:1px solid rgba(232,206,145,.7);
+ border-radius:50%;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ position:relative;
+ box-shadow:
+ 0 0 20px rgba(232,206,145,.12),
+ inset 0 0 15px rgba(232,206,145,.1);
+ margin-bottom:24px;
+}
+
+.emblem:before{
+ content:"";
+ position:absolute;
+ inset:8px;
+ border:1px solid rgba(232,206,145,.35);
+ border-radius:50%;
+}
+
+.emblem:after{
+ content:"";
+ position:absolute;
+ width:125px;
+ height:1px;
+ background:linear-gradient(90deg,transparent,var(--gold),transparent);
+ transform:rotate(45deg);
+}
+
+.emblem span{
+ color:var(--gold2);
+ font-size:43px;
+ text-shadow:0 0 20px rgba(232,206,145,.8);
+}
+
+.cover h2{
+ color:var(--gold2);
+ font-weight:normal;
+ font-size:clamp(29px,5vw,48px);
+ letter-spacing:8px;
+ text-shadow:0 0 22px rgba(232,206,145,.35);
+}
+
+.cover-rule{
+ width:95px;
+ height:1px;
+ margin:22px 0;
+ background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+
+.cover-sub{
+ color:#b9c8dc;
+ font-size:10px;
+ letter-spacing:4px;
+ line-height:2.5;
+}
+
+.cover-hint{
+ position:absolute;
+ bottom:35px;
+ color:#c5ac75;
+ font-size:9px;
+ letter-spacing:3px;
+ animation:hint 2s infinite alternate;
+}
+
+@keyframes hint{
+ from{opacity:.4}
+ to{opacity:1}
+}
+
+/* CONTROLS */
+.controls{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:25px;
+ margin-top:30px;
+}
+
+.control-btn{
+ width:43px;
+ height:43px;
+ border-radius:50%;
+ border:1px solid rgba(232,206,145,.55);
+ background:rgba(14,27,48,.9);
+ color:var(--gold);
+ font-size:22px;
+ cursor:pointer;
+ transition:.3s;
+}
+
+.control-btn:hover{
+ background:rgba(232,206,145,.13);
+ box-shadow:0 0 17px rgba(232,206,145,.2);
+}
+
+.control-btn:disabled{
+ opacity:.25;
+ cursor:not-allowed;
+}
+
+.counter{
+ min-width:90px;
+ text-align:center;
+ color:#c9b98e;
+ font-size:10px;
+ letter-spacing:3px;
+}
+
+.instruction{
+ color:#8996aa;
+ font-size:9px;
+ letter-spacing:3px;
+ margin-top:15px;
+ text-align:center;
+}
+
+footer{
+ text-align:center;
+ margin-top:35px;
+ color:#7f8da3;
+ font-size:10px;
+ letter-spacing:3px;
+ line-height:2.5;
+}
+
+footer span{color:var(--gold)}
+
+/* MOBILE */
+@media(max-width:600px){
+ .container{padding:18px 10px 35px}
+ .logo{font-size:10px;letter-spacing:3px}
+ .book{width:94vw;aspect-ratio:1 / 1}
+ .paper,.flip .front,.flip .back{
+  padding:17px 11px;
+ }
+ .paper h3,.flip h3{
+  font-size:13px;
+  letter-spacing:1px;
+  margin-bottom:10px;
+ }
+ .paper p,.flip p{
+  font-size:9px;
+  line-height:1.9;
+ }
+ .date{
+  font-size:7px;
+  letter-spacing:1px;
+  margin-bottom:11px;
+ }
+ .photo{
+  width:96%;
+  height:40%;
+  padding:5px;
+  margin:10px auto;
+ }
+ .photo-inner{
+  font-size:7px;
+  gap:6px;
+  letter-spacing:1px;
+ }
+ .photo-inner span{font-size:22px}
+ .quote{
+  font-size:8px;
+  padding:7px;
+  margin-top:12px;
+ }
+ .page-number{font-size:7px;bottom:11px}
+ .emblem{width:70px;height:70px;margin-bottom:15px}
+ .emblem:before{inset:5px}
+ .emblem:after{width:85px}
+ .emblem span{font-size:30px}
+ .cover-top{font-size:8px;letter-spacing:3px;margin-bottom:15px}
+ .cover h2{font-size:27px;letter-spacing:4px}
+ .cover-rule{margin:14px 0}
+ .cover-sub{font-size:8px;letter-spacing:2px}
+ .cover-hint{bottom:25px;font-size:7px}
+ .controls{gap:18px;margin-top:25px}
+ .control-btn{width:37px;height:37px}
+}
+
+/* SHORT SCREEN */
+@media(max-height:650px) and (min-width:601px){
+ .book{width:min(620px,85vw)}
+ .heading{padding-top:20px;padding-bottom:10px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+<div class="glow"></div>
+<div class="stars" id="stars"></div>
+
+<div class="container">
+
+<header>
+ <div class="logo">AUSTRALIS ✦</div>
+ <a href="index.html" class="back">← BACK HOME</a>
+</header>
+
+<div class="heading">
+ <small>A COLLECTION OF LITTLE MOMENTS</small>
+ <h1>Memories</h1>
+ <div class="ornament">✧ ─── ✦ ─── ✧</div>
+</div>
+
+<div class="book-area">
+
+<div class="book" id="book">
+
+ <div class="edge right"></div>
+ <div class="edge bottom"></div>
+
+ <!-- 书本底页 -->
+ <div class="book-base">
+
+  <div class="paper left">
+   <div class="corner tl"></div>
+   <div class="corner br"></div>
+
+   <div class="date">A LITTLE NOTE · 001</div>
+   <h3>写在第一页</h3>
+   <div class="line"></div>
+
+   <p>有些瞬间看起来平平无奇，
+却在后来变成了很珍贵的回忆。
+
+这里可以记录你想留下的事情，
+不必多么盛大，也不必多么特别。
+
+只要它对你有意义，
+就值得被好好收藏。</p>
+
+   <div class="quote">
+    "Some moments deserve to stay."
+   </div>
+
+   <div class="page-number">01</div>
+  </div>
+
+  <div class="paper right">
+   <div class="corner tl"></div>
+   <div class="corner br"></div>
+
+   <div class="date">PHOTO COLLECTION · 001</div>
+   <h3>一张照片</h3>
+
+   <div class="photo">
+    <div class="photo-inner">
+     <span>✧</span>
+     PHOTO PLACE
+     <small>把喜欢的照片放在这里</small>
+    </div>
+   </div>
+
+   <p>照片、截图、风景，
+以后都可以放进这本书里。</p>
+
+   <div class="page-number">02</div>
+  </div>
+
+ </div>
+
+ <!-- 第三、四页 -->
+ <div class="flip" id="flip1" style="z-index:10">
+  <div class="front">
+   <div class="corner tl"></div>
+   <div class="corner br"></div>
+   <div class="date">MEMORY · 002</div>
+   <h3>那些特别的日子</h3>
+   <div class="line"></div>
+   <p>日期：__________
+
+地点：__________
+
+记录：
+
+把那一天发生的事情写在这里。
+
+可以是一场旅行，
+一次相遇，
+或者一个很普通的下午。</p>
+   <div class="page-number">03</div>
+  </div>
+
+  <div class="back">
+   <div class="corner tl"></div>
+   <div class="corner br"></div>
+   <div class="date">PHOTO · 002</div>
+   <h3>留下画面</h3>
+   <div class="photo">
+    <div class="photo-inner">
+     <span>✧</span>
+     PHOTO PLACE
+     <small>回忆照片的位置</small>
+    </div>
+   </div>
+   <p>每张照片，都藏着一个故事。</p>
+   <div class="page-number">04</div>
+  </div>
+ </div>
+
+ <!-- 第五、六页 -->
+ <div class="flip" id="flip2" style="z-index:9">
+  <div class="front">
+   <div class="corner tl"></div>
+   <div class="corner br"></div>
+   <div class="date">MEMORY · 003</div>
+   <h3>遇见的人</h3>
+   <div class="line"></div>
+   <p>有些人出现得很突然，
+却留下了很长的故事。
+
+名字：__________
+
+想说的话：
+
+在这里写下关于某个人的回忆。</p>
+   <div class="page-number">05</div>
+  </div>
+
+  <div class="back">
+   <div class="corner tl"></div>
+   <div class="corner br"></div>
+   <div class="date">A SMALL TREASURE</div>
+   <h3>值得珍藏</h3>
+   <div class="photo">
+    <div class="photo-inner">
+     <span>✧</span>
+     PHOTO PLACE
+     <small>留给特别的人或事</small>
+    </div>
+   </div>
+   <div class="page-number">06</div>
+  </div>
+ </div>
+
+ <!-- 第七、八页 -->
+ <div class="flip" id="flip3" style="z-index:8">
+  <div class="front">
+   <div class="corner tl"></div>
+   <div class="corner br"></div>
+   <div class="date">THE LAST PAGE</div>
+   <h3>未完待续</h3>
+   <div class="line"></div>
+   <p>这本书还没有写完。
+
+未来还有新的地方，
+新的人，
+新的故事。
+
+所以今天先写到这里。</p>
+   <div class="page-number">07</div>
+  </div>
+
+  <div class="back">
+   <div style="
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+   ">
+    <div style="font-size:32px;color:#e8ce91">✦</div>
+    <h3 style="margin-top:18px">AUSTRALIS</h3>
+    <p style="text-align:center">
+     Thank you for being here.
+     <br><br>
+     愿每一段回忆，
+     <br>
+     都有它自己的位置。
+    </p>
+    <div style="margin-top:25px;color:#b99c61">✧ ✧ ✧</div>
+   </div>
+   <div class="page-number">08</div>
+  </div>
+ </div>
+
+ <!-- 封面 -->
+ <div class="cover" id="cover">
+  <div class="cover-top">A PERSONAL COLLECTION</div>
+
+  <div class="emblem">
+   <span>✦</span>
+  </div>
+
+  <h2>MEMORIES</h2>
+  <div class="cover-rule"></div>
+
+  <div class="cover-sub">
+   AUSTRALIS
+   <br>
+   A BOOK OF LITTLE MOMENTS
+  </div>
+
+  <div class="cover-hint">CLICK TO OPEN · ✧</div>
+ </div>
+
+</div>
+
+<div class="controls">
+ <button class="control-btn" id="prev" disabled>‹</button>
+ <div class="counter" id="counter">COVER</div>
+ <button class="control-btn" id="next">›</button>
+</div>
+
+<div class="instruction">
+ CLICK THE ARROWS TO TURN THE PAGES
+</div>
+
+</div>
+
+<footer>
+ AUSTRALIS · MEMORIES
+ <br>
+ <span>✦</span> EVERY MOMENT HAS A STORY <span>✦</span>
+</footer>
+
+</div>
+
+<script>
+// 星空
+const stars=document.getElementById("stars");
+
+for(let i=0;i<100;i++){
+ const s=document.createElement("span");
+ s.style.left=Math.random()*100+"%";
+ s.style.top=Math.random()*100+"%";
+ s.style.animationDelay=Math.random()*4+"s";
+ s.style.animationDuration=(2+Math.random()*3)+"s";
+ stars.appendChild(s);
+}
+
+// 翻页
+const cover=document.getElementById("cover");
+const flips=[
+ document.getElementById("flip1"),
+ document.getElementById("flip2"),
+ document.getElementById("flip3")
+];
+
+const prev=document.getElementById("prev");
+const next=document.getElementById("next");
+const counter=document.getElementById("counter");
+
+let current=0;
+let opened=false;
+let busy=false;
+
+function update(){
+ prev.disabled=!opened;
+ next.disabled=opened&&current===flips.length;
+
+ if(!opened){
+  counter.textContent="COVER";
+ }else{
+  counter.textContent=
+   String(current*2+1).padStart(2,"0")+" / 08";
+ }
+}
+
+function openBook(){
+ if(opened||busy)return;
+
+ opened=true;
+ busy=true;
+ cover.classList.add("open");
+
+ setTimeout(()=>{
+  cover.style.display="none";
+  busy=false;
+  update();
+ },1200);
+
+ update();
+}
+
+function turnNext(){
+ if(busy)return;
+
+ if(!opened){
+  openBook();
+  return;
+ }
+
+ if(current>=flips.length)return;
+
+ const page=flips[current];
+ busy=true;
+
+ page.style.zIndex=20;
+ page.classList.add("flipped");
+
+ current++;
+
+ setTimeout(()=>{
+  page.style.zIndex=2;
+  busy=false;
+  update();
+ },1050);
+
+ update();
+}
+
+function turnPrev(){
+ if(busy||!opened)return;
+
+ if(current===0){
+  busy=true;
+  cover.style.display="flex";
+
+  requestAnimationFrame(()=>{
+   cover.classList.remove("open");
+  });
+
+  opened=false;
+
+  setTimeout(()=>{
+   busy=false;
+   update();
+  },1200);
+
+  update();
+  return;
+ }
+
+ current--;
+ const page=flips[current];
+
+ busy=true;
+ page.style.zIndex=20;
+ page.classList.remove("flipped");
+
+ setTimeout(()=>{
+  page.style.zIndex=10-current;
+  busy=false;
+  update();
+ },1050);
+
+ update();
+}
+
+cover.addEventListener("click",openBook);
+next.addEventListener("click",turnNext);
+prev.addEventListener("click",turnPrev);
+
+update();
+</script>
+
+</body>
+</html>

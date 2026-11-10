@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Midnight Étoile · About Me</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --gold: #c9a96e;
+    --gold-light: #f0d9a5;
+    --gold-dark: #80633c;
+    --text: #e6ddcc;
+    --muted: #a39baa;
+    --panel: rgba(7, 14, 29, .91);
+    --border: rgba(197, 163, 103, .48);
+}
+
+body {
+    min-height: 100vh;
+    color: var(--text);
+    font-family: "Noto Serif SC", "Songti SC", Georgia, serif;
+    overflow-x: hidden;
+
+    background:
+        linear-gradient(
+            rgba(2, 5, 16, .78),
+            rgba(2, 5, 16, .93)
+        ),
+        url("blue.png") center center / cover fixed;
+}
+
+/* =========================
+   星空背景
+========================= */
+
+#stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #f5dba5;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #eac77e;
+    animation: twinkle 3s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+    from {
+        opacity: .15;
+        transform: scale(.7);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1.6);
+    }
+}
+
+/* =========================
+   金色星尘
+========================= */
+
+#goldStars {
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.gold-star {
+    position: absolute;
+    color: #e8c77f;
+    text-shadow:
+        0 0 5px #e8c77f,
+        0 0 12px rgba(235, 194, 112, .8);
+    animation: goldTwinkle 2.8s ease-in-out infinite alternate;
+}
+
+@keyframes goldTwinkle {
+    0% {
+        opacity: .2;
+        transform: scale(.7) rotate(0deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1.35) rotate(45deg);
+    }
+}
+
+/* =========================
+   流星
+========================= */
+
+.shooting-star {
+    position: fixed;
+    top: -30px;
+    width: 100px;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #f5d89d,
+        white
+    );
+    opacity: 0;
+    transform: rotate(135deg);
+    pointer-events: none;
+    z-index: 2;
+    animation: shooting 1.3s linear forwards;
+}
+
+@keyframes shooting {
+    0% {
+        opacity: 0;
+        transform: translate(0, 0) rotate(135deg);
+    }
+    15% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-350px, 350px) rotate(135deg);
+    }
+}
+
+/* =========================
+   返回按钮
+========================= */
+
+.back {
+    position: fixed;
+    top: 20px;
+    left: 25px;
+    z-index: 10;
+    text-decoration: none;
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 3px;
+    transition: .3s;
+}
+
+.back:hover {
+    color: white;
+    text-shadow: 0 0 10px var(--gold);
+}
+
+/* =========================
+   主体
+========================= */
+
+.container {
+    width: 90%;
+    max-width: 1280px;
+    margin: auto;
+    padding: 70px 0 50px;
+    position: relative;
+    z-index: 1;
+}
+
+/* =========================
+   标题
+========================= */
+
+.header {
+    text-align: center;
+    margin-bottom: 35px;
+    position: relative;
+}
+
+.header .eyebrow {
+    color: var(--gold);
+    font-size: 10px;
+    letter-spacing: 7px;
+}
+
+.header h1 {
+    color: var(--gold-light);
+    font-size: 42px;
+    font-weight: normal;
+    letter-spacing: 9px;
+    margin: 13px 0;
+    text-shadow: 0 0 22px rgba(213, 177, 112, .3);
+}
+
+.header h1::before,
+.header h1::after {
+    content: "✦";
+    color: var(--gold);
+    font-size: 18px;
+    vertical-align: middle;
+    margin: 0 20px;
+    text-shadow: 0 0 12px var(--gold);
+}
+
+.header .subtitle {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 4px;
+    font-style: italic;
+}
+
+.ornament {
+    margin-top: 20px;
+    color: var(--gold-light);
+    font-size: 17px;
+    text-shadow: 0 0 12px var(--gold);
+}
+
+.gold-line {
+    width: 180px;
+    height: 1px;
+    margin: 15px auto;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--gold),
+        transparent
+    );
+}
+
+/* =========================
+   通用卡片
+========================= */
+
+.panel {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.35),
+        inset 0 0 25px rgba(150, 117, 65, .035);
+}
+
+.panel::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid rgba(197, 163, 103, .16);
+    pointer-events: none;
+}
+
+.panel::after {
+    content: "✧";
+    position: absolute;
+    right: 13px;
+    bottom: 9px;
+    color: var(--gold);
+    font-size: 15px;
+    text-shadow: 0 0 8px var(--gold);
+    pointer-events: none;
+}
+
+/* 四角装饰 */
+
+.corner {
+    position: absolute;
+    color: var(--gold-light);
+    font-size: 15px;
+    text-shadow: 0 0 8px var(--gold);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.corner.tl { top: 7px; left: 9px; }
+.corner.tr { top: 7px; right: 9px; }
+.corner.bl { bottom: 7px; left: 9px; }
+.corner.br { bottom: 7px; right: 9px; }
+
+/* =========================
+   第一部分
+========================= */
+
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 25px;
+    align-items: stretch;
+    margin-bottom: 22px;
+}
+
+/* =========================
+   光崽图片区域
+========================= */
+
+.avatar-panel {
+    padding: 20px;
+    overflow: hidden;
+}
+
+.panel-label {
+    text-align: center;
+    color: var(--gold);
+    font-size: 10px;
+    letter-spacing: 5px;
+    margin-bottom: 18px;
+}
+
+/* 星轨 */
+
+.avatar-scene {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 10px;
+}
+
+.orbit {
+    position: absolute;
+    width: 112%;
+    height: 75%;
+    border: 1px solid rgba(207, 173, 113, .5);
+    border-radius: 50%;
+    transform: rotate(-24deg);
+    box-shadow: 0 0 12px rgba(205, 169, 105, .12);
+    pointer-events: none;
+}
+
+.orbit.two {
+    width: 120%;
+    height: 85%;
+    transform: rotate(28deg);
+    border-color: rgba(207, 173, 113, .24);
+}
+
+.orbit-star {
+    position: absolute;
+    color: var(--gold-light);
+    text-shadow: 0 0 12px var(--gold);
+    font-size: 19px;
+    z-index: 2;
+}
+
+.orbit-star.one {
+    top: 7%;
+    left: 15%;
+}
+
+.orbit-star.two {
+    right: 12%;
+    bottom: 12%;
+    font-size: 14px;
+}
+
+.orbit-star.three {
+    right: 18%;
+    top: 13%;
+    font-size: 10px;
+}
+
+/* 图片 */
+
+.avatar-frame {
+    width: 83%;
+    aspect-ratio: 4 / 5;
+    max-height: 390px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    background: #070d1c;
+    border: 1px solid rgba(219, 187, 127, .7);
+    box-shadow:
+        0 0 20px rgba(193, 155, 91, .15),
+        0 0 45px rgba(193, 155, 91, .08);
+}
+
+.avatar-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.avatar-frame::after {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border: 1px solid rgba(235, 207, 160, .3);
+    pointer-events: none;
+}
+
+.avatar-name {
+    text-align: center;
+    margin-top: 16px;
+    color: var(--gold-light);
+    font-size: 15px;
+    letter-spacing: 5px;
+}
+
+.avatar-caption {
+    text-align: center;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 3px;
+}
+
+/* =========================
+   基本资料
+========================= */
+
+.profile-panel {
+    padding: 27px;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 21px;
+}
+
+.section-heading .number {
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.section-heading h2 {
+    color: var(--gold-light);
+    font-size: 15px;
+    font-weight: normal;
+    letter-spacing: 3px;
+}
+
+.section-heading::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(
+        90deg,
+        var(--border),
+        transparent
+    );
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 25px;
+}
+
+.profile-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(190,158,105,.19);
+    font-size: 12px;
+}
+
+.key {
+    color: #bda77e;
+    white-space: nowrap;
+}
+
+.value {
+    color: var(--text);
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 20px;
+}
+
+.tag {
+    padding: 7px 13px;
+    color: var(--gold-light);
+    font-size: 10px;
+    letter-spacing: 1px;
+    border: 1px solid rgba(197,168,117,.5);
+    background: rgba(197,168,117,.055);
+}
+
+/* =========================
+   下方档案
+========================= */
+
+.section-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 19px;
+    margin-top: 20px;
+}
+
+.info-panel {
+    padding: 25px 27px;
+}
+
+.info-panel h3 {
+    color: var(--gold-light);
+    font-size: 14px;
+    font-weight: normal;
+    letter-spacing: 3px;
+    margin-bottom: 17px;
+}
+
+.info-panel h3 span {
+    color: var(--gold);
+    margin-right: 10px;
+}
+
+.info-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(190,158,105,.15);
+    font-size: 12px;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-row .key {
+    min-width: 105px;
+}
+
+.info-row .value {
+    line-height: 1.8;
+}
+
+.description {
+    color: #c8bfaf;
+    font-size: 12px;
+    line-height: 2.2;
+    margin-top: 12px;
+}
+
+/* =========================
+   特别记录
+========================= */
+
+.full-panel {
+    margin-top: 20px;
+    padding: 26px 28px;
+}
+
+.full-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.mini-title {
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+}
+
+.mini-text {
+    color: #c8bfaf;
+    font-size: 12px;
+    line-height: 2.2;
+}
+
+/* =========================
+   访客留言
+========================= */
+
+.visitor-note {
+    margin-top: 20px;
+    padding: 27px;
+    text-align: center;
+}
+
+.visitor-note .note-star {
+    color: var(--gold-light);
+    font-size: 20px;
+    text-shadow: 0 0 12px var(--gold);
+    margin-bottom: 12px;
+}
+
+.visitor-note h3 {
+    color: var(--gold-light);
+    font-weight: normal;
+    font-size: 14px;
+    letter-spacing: 4px;
+    margin-bottom: 15px;
+}
+
+.visitor-note p {
+    color: #c8bfaf;
+    font-size: 12px;
+    line-height: 2.2;
+}
+
+/* =========================
+   页脚
+========================= */
+
+.footer {
+    text-align: center;
+    margin-top: 40px;
+    color: #96886f;
+    font-size: 10px;
+    letter-spacing: 4px;
+}
+
+.footer-line {
+    width: 150px;
+    height: 1px;
+    margin: 0 auto 18px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--gold),
+        transparent
+    );
+}
+
+/* =========================
+   动画
+========================= */
+
+.panel {
+    animation: appear .8s ease both;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   横屏布局
+========================= */
+
+@media (orientation: landscape) and (min-width: 700px) {
+    .container {
+        width: 91%;
+    }
+
+    .avatar-frame {
+        aspect-ratio: 4 / 5;
+    }
+}
+
+/* =========================
+   竖屏适配
+========================= */
+
+@media (max-width: 700px) {
+    .container {
+        width: 92%;
+        padding-top: 65px;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+    }
+
+    .avatar-frame {
+        aspect-ratio: 16 / 10;
+        max-height: 320px;
+    }
+
+    .section-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header h1 {
+        font-size: 29px;
+        letter-spacing: 5px;
+    }
+
+    .header h1::before,
+    .header h1::after {
+        margin: 0 7px;
+        font-size: 12px;
+    }
+
+    .profile-panel,
+    .info-panel {
+        padding: 20px;
+    }
+
+    .orbit {
+        width: 105%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 背景星星 -->
+
+<div id="stars"></div>
+<div id="goldStars"></div>
+
+<a href="index.html" class="back">✦ RETURN TO HOME</a>
+
+<main class="container">
+
+    <!-- 标题 -->
+
+    <header class="header">
+
+        <div class="eyebrow">
+            PERSONAL ARCHIVE · NO. 001
+        </div>
+
+        <h1>About Myself</h1>
+
+        <div class="subtitle">
+            A little record of who I am.
+        </div>
+
+        <div class="ornament">✧ ✦ ✧</div>
+
+        <div class="gold-line"></div>
+
+    </header>
+
+
+    <!-- 光崽与基本资料 -->
+
+    <section class="hero">
+
+        <!-- 左侧光崽 -->
+
+        <div class="panel avatar-panel">
+
+            <span class="corner tl">✦</span>
+            <span class="corner tr">✧</span>
+            <span class="corner bl">✧</span>
+            <span class="corner br">✦</span>
+
+            <div class="panel-label">
+                ✦ 自我介绍 ✦
+            </div>
+
+            <div class="avatar-scene">
+
+                <div class="orbit"></div>
+                <div class="orbit two"></div>
+
+                <span class="orbit-star one">✦</span>
+                <span class="orbit-star two">✧</span>
+                <span class="orbit-star three">⋆</span>
+
+                <div class="avatar-frame">
+                    <img src="sky.jpg" alt="My Sky Avatar">
+                </div>
+
+            </div>
+
+            <div class="avatar-name">
+                南隅Australis
+            </div>
+
+            <div class="avatar-caption">
+                光是遇见，就很美好。
+            </div>
+
+        </div>
+
+
+        <!-- 右侧基本资料 -->
+
+        <div class="panel profile-panel">
+
+            <span class="corner tl">✦</span>
+            <span class="corner tr">✦</span>
+            <span class="corner bl">✧</span>
+            <span class="corner br">✦</span>
+
+            <div class="section-heading">
+                <span class="number">Ⅰ</span>
+                <h2>INFORMATION · 基本资料</h2>
+            </div>
+
+            <div class="profile-grid">
+
+                <div class="profile-item">
+                    <span class="key">昵称 / Name</span>
+                    <span class="value">南鱼/南隅/南神/小南/小鱼</span>
+                </div>
+
+                <div class="profile-item">
+                    <span class="key">生日 / Birthday</span>
+                    <span class="value">07/19</span>
+                </div>
+
+                <div class="profile-item">
+                    <span class="key">年龄 / Age</span>
+                    <span class="value">17</span>
+                </div>
+
+                <div class="profile-item">
+                    <span class="key">星座 / Zodiac</span>
+                    <span class="value">巨蟹座</span>
+                </div>
+
+                <div class="profile-item">
+                    <span class="key">国家 / Country</span>
+                    <span class="value">马来西亚</span>
+                </div>
+
+                <div class="profile-item">
+                    <span class="key">性别 / Gender</span>
+                    <span class="value">女</span>
+                </div>
+
+                <div class="profile-item">
+                    <span class="key">语言 / Languages</span>
+                    <span class="value">中文</span>
+                </div>
+
+                <div class="profile-item">
+                    <span class="key">称呼 / Pronouns</span>
+                    <span class="value">南神</span>
+                </div>
+
+                <div class="profile-item">
+                    <span class="key">MBTI</span>
+                    <span class="value">ENTP-T</span>
+                </div>
+
+                <div class="profile-item">
+                    <span class="key">九型人格</span>
+                    <span class="value">7w6</span>
+                </div>
+
+                <div class="profile-item">
+                    <span class="key">友圈</span>
+                    <span class="value">小</span>
+                </div>
+
+                <div class="profile-item">
+                    <span class="key">个人标签</span>
+                    <span class="value">抽象</span>
+                </div>
+
+            </div>
+
+            <div class="tags">
+                <span class="tag">✦ 回避型人格</span>
+                <span class="tag">✧ 高攻低防</span>
+                <span class="tag">⋆ 外热内冷</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 性格与喜好 -->
+
+    <section class="section-grid">
+
+        <div class="panel info-panel">
+
+            <span class="corner tl">✦</span>
+            <span class="corner tr">✧</span>
+
+            <h3><span>Ⅱ</span> PERSONALITY · 性格档案</h3>
+
+            <div class="info-row">
+                <span class="key">性格关键词</span>
+                <span class="value">暴躁，抽象，话唠，社牛，幽默</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">自我评价</span>
+                <span class="value">表面看着爱说话，实际上需要独处充电</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">优点</span>
+                <span class="value">很容易逗别人笑，我觉得这就很是我的优点，我好优秀啊，不管在哪，做什么，我都好优秀！而且我还是个大好人</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">缺点</span>
+                <span class="value">容易玩消失，断崖式不聊天，忽冷忽热</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">社交模式</span>
+                <span class="value">看人，比较不能接受开玩笑的尽量正经</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">其他特点</span>
+                <span class="value">社交时间长，断电时间也长</span>
+            </div>
+
+        </div>
+
+
+        <div class="panel info-panel">
+
+            <span class="corner tl">✦</span>
+            <span class="corner tr">✧</span>
+
+            <h3><span>Ⅲ</span> FAVOURITES · 喜好档案</h3>
+
+            <div class="info-row">
+                <span class="key">喜欢的颜色</span>
+                <span class="value">GOLDEN金色</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">喜欢的动物</span>
+                <span class="value">狐狸，北长尾山雀，雪狼</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">喜欢的音乐</span>
+                <span class="value">Are You Lost</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">喜欢的游戏</span>
+                <span class="value">光遇Sky:The Children of The Light</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">喜欢的食物</span>
+                <span class="value">巧克力</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">喜欢的季节</span>
+                <span class="value">秋季，冬季</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">喜欢的角色</span>
+                <span class="value">————</span>
+            </div>
+
+        </div>
+
+
+        <div class="panel info-panel">
+
+            <span class="corner tl">✦</span>
+            <span class="corner tr">✧</span>
+
+            <h3><span>Ⅳ</span> LITTLE DETAILS · 生活细节</h3>
+
+            <div class="info-row">
+                <span class="key">作息习惯</span>
+                <span class="value">平时都在六七点睡觉凌晨三四点醒</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">日常习惯</span>
+                <span class="value">玩光遇，画画，搞oc世界观</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">小怪癖</span>
+                <span class="value">额..喜欢约别人一起拉屎？</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">不喜欢的事</span>
+                <span class="value">做数学题，做一些重复性的事</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">害怕的东西</span>
+                <span class="value">虫子，尤其是蝴蝶蜘蛛</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">其他冷知识</span>
+                <span class="value">我不爱说话</span>
+            </div>
+
+        </div>
+
+
+        <div class="panel info-panel">
+
+            <span class="corner tl">✦</span>
+            <span class="corner tr">✧</span>
+
+            <h3><span>Ⅴ</span> MY SKY LIFE · 光遇档案</h3>
+
+            <div class="info-row">
+                <span class="key">入坑日期</span>
+                <span class="value">飞行季最后一天倒数最后一小时</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">常驻</span>
+                <span class="value">白枭，花环，林克，巫师，正太</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">喜欢的地图</span>
+                <span class="value">霞谷</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">喜欢的季节</span>
+                <span class="value">飞行季或梵高季</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">会的技术</span>
+                <span class="value">跑图，弹琴，社交，留影制作</span>
+            </div>
+
+            <div class="info-row">
+                <span class="key">雷点</span>
+                <span class="value">没素质，把对你的好理所当然，蠢货装逼，尬聊，没长嘴，什么事都要让我猜</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 特别记录 -->
+
+    <section class="panel full-panel">
+
+        <span class="corner tl">✦</span>
+        <span class="corner tr">✦</span>
+
+        <div class="section-heading">
+            <span class="number">Ⅵ</span>
+            <h2>EXTRA RECORDS · 特别记录</h2>
+        </div>
+
+        <div class="full-grid">
+
+            <div>
+                <div class="mini-title">✧ FUN FACTS · 冷知识</div>
+                <div class="mini-text">
+                    认真做事情的时候我都不爱说话，尤其是跑图和弹琴。有时候早上会犯迷糊，晚上偶尔也会，其实嘴上骂你不代表真的不在意你，只是因为太在意所以会骂，有点嘴毒，没情商，但是是真心在乎你，其实我心很软的，做什么事都不会太决绝，除非真的踩到我雷点
+                </div>
+            </div>
+
+            <div>
+                <div class="mini-title">✦ MY QUOTES · 经典语录</div>
+                <div class="mini-text">
+                    必须，我肯定是最优秀的！
+                </div>
+            </div>
+
+            <div>
+                <div class="mini-title">⋆ MY WORLD · 我的世界</div>
+                <div class="mini-text">
+                    世界就是一个草台班子。。
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 访客留言 -->
+
+    <section class="panel visitor-note">
+
+        <div class="note-star">✦ ✧ ✦</div>
+
+        <h3>Ⅶ · A NOTE TO VISITORS</h3>
+
+        <p>
+            <br>
+            欢迎来找我玩，平时都一个人
+        </p>
+
+    </section>
+
+
+    <!-- 页脚 -->
+
+    <footer class="footer">
+
+        <div class="footer-line"></div>
+
+        ✦ END OF PERSONAL ARCHIVE ✦
+
+        <p style="margin-top:13px;">
+            THANK YOU FOR VISITING MY LITTLE WORLD
+        </p>
+
+        <p style="margin-top:10px;color:#c2a36c;">
+            ✧ ⋆ ✦ ⋆ ✧
+        </p>
+
+    </footer>
+
+</main>
+
+
+<script>
+
+/* =========================
+   普通星星
+========================= */
+
+const starBox = document.getElementById("stars");
+
+for (let i = 0; i < 90; i++) {
+
+    const star = document.createElement("div");
+
+    star.className = "star";
+
+    star.style.left = Math.random() * 100 + "%";
+    star.style.top = Math.random() * 100 + "%";
+
+    star.style.animationDelay =
+        Math.random() * 4 + "s";
+
+    starBox.appendChild(star);
+
+}
+
+
+/* =========================
+   金色装饰星星
+========================= */
+
+const goldBox = document.getElementById("goldStars");
+
+const symbols = ["✦", "✧", "⋆", "✴", "✵"];
+
+for (let i = 0; i < 40; i++) {
+
+    const star = document.createElement("span");
+
+    star.className = "gold-star";
+
+    star.textContent =
+        symbols[Math.floor(Math.random() * symbols.length)];
+
+    star.style.left = Math.random() * 100 + "%";
+    star.style.top = Math.random() * 100 + "%";
+
+    star.style.fontSize =
+        (8 + Math.random() * 15) + "px";
+
+    star.style.animationDelay =
+        Math.random() * 4 + "s";
+
+    goldBox.appendChild(star);
+
+}
+
+
+/* =========================
+   偶尔出现的金色流星
+========================= */
+
+function createShootingStar() {
+
+    const meteor = document.createElement("div");
+
+    meteor.className = "shooting-star";
+
+    meteor.style.left =
+        (30 + Math.random() * 70) + "%";
+
+    meteor.style.top =
+        (Math.random() * 35) + "%";
+
+    document.body.appendChild(meteor);
+
+    setTimeout(function() {
+        meteor.remove();
+    }, 1400);
+
+}
+
+/* 首次出现 */
+
+setTimeout(createShootingStar, 1200);
+
+/* 后续随机出现 */
+
+setInterval(function() {
+
+    if (Math.random() > 0.35) {
+        createShootingStar();
+    }
+
+}, 4500);
+
+</script>
+
+</body>
+</html>

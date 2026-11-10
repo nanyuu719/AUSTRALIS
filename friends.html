@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南隅 · Friend Galaxy</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#e8ce91;
+  --gold2:#a98b54;
+  --blue:#a9c9ed;
+  --bg:#050914;
+  --panel:rgba(13,22,42,.88);
+}
+body{
+  width:100%;
+  min-height:100vh;
+  overflow:hidden;
+  color:#eee9dc;
+  background:#02030b;
+  font-family:"Georgia","Noto Serif SC",serif;
+}
+
+/* 银河背景底层 */
+#skyBackground{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+  pointer-events:none;
+  background:#02030b;
+}
+
+/* 银河图片 */
+.galaxy{
+  position:absolute;
+  inset:-5%;
+  background-image:url("blue.png");
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+  filter:brightness(.38) saturate(.85);
+  animation:galaxyZoom 24s ease-in-out infinite alternate;
+}
+
+@keyframes galaxyZoom{
+  from{transform:scale(1)}
+  to{transform:scale(1.15)}
+}
+
+/* 蓝色星云 */
+.blue-mist{
+  position:absolute;
+  inset:-25%;
+  background:
+    radial-gradient(ellipse at 25% 40%,
+      rgba(28,117,190,.15),transparent 45%),
+    radial-gradient(ellipse at 75% 60%,
+      rgba(53,180,225,.12),transparent 40%),
+    radial-gradient(ellipse at 50% 15%,
+      rgba(110,205,255,.08),transparent 38%);
+  filter:blur(35px);
+  animation:blueMist 18s ease-in-out infinite alternate;
+}
+
+@keyframes blueMist{
+  0%{transform:translate(-3%,2%) scale(1);opacity:.45}
+  100%{transform:translate(4%,-3%) scale(1.12);opacity:.8}
+}
+
+/* 银河光带 */
+.galaxy-ribbon{
+  position:absolute;
+  width:160%;
+  height:55%;
+  left:-30%;
+  top:23%;
+  background:linear-gradient(165deg,
+    transparent 15%,
+    rgba(70,174,235,.015) 30%,
+    rgba(115,218,255,.08) 48%,
+    rgba(65,150,225,.035) 58%,
+    transparent 78%);
+  filter:blur(22px);
+  transform:rotate(-12deg);
+  animation:galaxyFlow 17s ease-in-out infinite alternate;
+}
+
+@keyframes galaxyFlow{
+  0%{transform:translateX(-5%) rotate(-12deg);opacity:.35}
+  100%{transform:translateX(5%) rotate(-7deg);opacity:.75}
+}
+
+/* 蓝色微光 */
+.blue-shimmer{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse at 30% 45%,
+      rgba(80,180,255,.06),transparent 55%),
+    radial-gradient(ellipse at 75% 55%,
+      rgba(80,210,255,.05),transparent 50%);
+  animation:shimmer 7s ease-in-out infinite alternate;
+}
+
+@keyframes shimmer{
+  from{opacity:.3}
+  to{opacity:.8}
+}
+
+/* 漂浮蓝色粒子 */
+.blue-particles{
+  position:absolute;
+  inset:0;
+}
+
+.blue-particles span{
+  position:absolute;
+  width:var(--size,3px);
+  height:var(--size,3px);
+  left:var(--x);
+  top:var(--y);
+  border-radius:50%;
+  background:#c8f0ff;
+  box-shadow:
+    0 0 6px 2px rgba(106,207,255,.65),
+    0 0 15px 4px rgba(52,156,255,.3);
+  animation:particleFloat var(--duration,8s)
+    ease-in-out infinite alternate;
+  animation-delay:var(--delay,0s);
+}
+
+@keyframes particleFloat{
+  0%{transform:translate(0,0) scale(.7);opacity:.1}
+  50%{opacity:.7}
+  100%{transform:translate(25px,-35px) scale(1.3);opacity:.3}
+}
+
+/* 流星 */
+.meteor-layer{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+}
+
+.meteor{
+  position:absolute;
+  width:180px;
+  height:2px;
+  background:linear-gradient(90deg,
+    transparent,
+    rgba(105,190,255,.15),
+    #a9eaff,
+    #fff);
+  border-radius:50%;
+  filter:drop-shadow(0 0 5px #75cfff)
+         drop-shadow(0 0 12px #409cff);
+  opacity:0;
+  animation:meteorFly 7s linear infinite;
+}
+
+.meteor::after{
+  content:"";
+  position:absolute;
+  right:0;
+  top:50%;
+  transform:translateY(-50%);
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:white;
+  box-shadow:0 0 8px 3px #a9eaff,0 0 18px 5px #409cff;
+}
+
+@keyframes meteorFly{
+  0%{opacity:0;transform:translate(0,0) rotate(30deg)}
+  5%{opacity:1}
+  18%{opacity:0;transform:translate(280px,160px) rotate(30deg)}
+  100%{opacity:0;transform:translate(280px,160px) rotate(30deg)}
+}
+
+.meteor:nth-child(1){top:18%;left:15%;animation-delay:0s}
+.meteor:nth-child(2){
+  top:42%;left:55%;
+  animation-delay:2.5s;
+  animation-duration:8s;
+  width:130px;
+}
+.meteor:nth-child(3){
+  top:70%;left:30%;
+  animation-delay:5s;
+  animation-duration:9s;
+  width:160px;
+}
+
+/* 整体深色遮罩 */
+.galaxy-shade{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom,
+    rgba(0,0,10,.45),
+    rgba(0,0,15,.12) 40%,
+    rgba(0,0,10,.58));
+}
+
+/* 保证网页内容在背景上方 */
+header{
+  z-index:3;
+}
+
+#main{
+  position:relative;
+  z-index:1;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+
+.brand{display:flex;align-items:center;gap:14px}
+.brand-mark{font-size:30px;color:var(--gold);text-shadow:0 0 18px #d6b76b}
+.brand h1{font-size:19px;letter-spacing:4px;font-weight:normal;color:#f1dfb6}
+.brand p{font-family:Arial,sans-serif;font-size:9px;letter-spacing:3px;color:#8293ae;margin-top:5px}
+.header-right{display:flex;align-items:center;gap:10px}
+.header-count{font:11px Arial,sans-serif;letter-spacing:1px;color:#9caac0;margin-right:8px}
+.tool{
+  color:#e7d7b4;background:rgba(232,206,145,.08);
+  border:1px solid rgba(232,206,145,.35);
+  border-radius:20px;padding:8px 13px;font-size:11px;
+  transition:.2s;
+}
+.tool:hover,.tool.active{background:rgba(232,206,145,.2);border-color:var(--gold);color:#fff2cf}
+#main{position:relative;height:calc(100vh - 88px);min-height:400px}
+#map{
+  width:100%;height:100%;display:block;
+  touch-action:none;cursor:grab;
+}
+#map.dragging{cursor:grabbing}
+.edge-visible{fill:none;stroke-width:2.1;opacity:.8}
+.edge-hit{fill:none;stroke:rgba(255,255,255,.01);stroke-width:25;pointer-events:stroke;cursor:pointer}
+.edge-label{
+  font:13px "Noto Serif SC",serif;fill:#f2dfb3;
+  paint-order:stroke;stroke:#081020;stroke-width:5px;stroke-linejoin:round;
+  text-anchor:middle;pointer-events:none;
+}
+.person{cursor:pointer}
+.person rect{
+  fill:rgba(10,19,37,.94);stroke:rgba(232,206,145,.65);stroke-width:1.4;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.55));
+}
+.person .halo{fill:none;stroke:rgba(232,206,145,.13);stroke-width:8}
+.person .avatar{fill:#172947;stroke:#d9bd80;stroke-width:1.2}
+.person .initial{fill:#f4dfad;font:18px "Noto Serif SC",serif;text-anchor:middle}
+.person .pname{fill:#f4e7c9;font:14px "Noto Serif SC",serif;text-anchor:middle}
+.person .pgroup{fill:#91a5c2;font:10px "Noto Serif SC",serif;text-anchor:middle}
+.person.selected rect{stroke:#fff0bc;stroke-width:2.5;filter:drop-shadow(0 0 12px rgba(232,206,145,.7))}
+.person.selected .halo{stroke:rgba(232,206,145,.55)}
+.person.dim{opacity:.17}
+#side{
+  position:absolute;left:18px;top:18px;z-index:2;
+  width:205px;padding:15px;
+  background:var(--panel);border:1px solid rgba(232,206,145,.24);
+  border-radius:13px;backdrop-filter:blur(12px);
+  box-shadow:0 8px 30px #0005;
+}
+.side-title{font-size:11px;letter-spacing:3px;color:var(--gold);margin-bottom:12px}
+#search{
+  width:100%;padding:9px 10px;border-radius:7px;
+  color:#eee;background:#080f20;border:1px solid #35445f;outline:none;
+  font-size:12px;margin-bottom:12px;
+}
+#search:focus{border-color:var(--gold)}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:9px 5px}
+.legend-item{font-size:10px;color:#aab7cb;display:flex;align-items:center;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px currentColor}
+.side-note{font-size:10px;color:#72829d;line-height:1.7;margin-top:13px;border-top:1px solid #ffffff15;padding-top:10px}
+#bottom{
+  position:absolute;right:18px;bottom:18px;z-index:2;
+  display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;
+}
+#bottom button{min-width:37px}
+#status{
+  position:absolute;left:50%;bottom:22px;transform:translateX(-50%);
+  color:#8c9bb2;font:10px Arial,sans-serif;letter-spacing:1px;
+  pointer-events:none;white-space:nowrap;
+}
+#modal{
+  position:fixed;inset:0;z-index:10;display:none;
+  align-items:center;justify-content:center;padding:15px;
+  background:rgba(1,4,12,.78);backdrop-filter:blur(8px);
+}
+#modal.show{display:flex}
+.modal-card{
+  width:min(460px,100%);max-height:88vh;overflow:auto;
+  background:linear-gradient(145deg,#152541,#091222);
+  border:1px solid rgba(232,206,145,.48);
+  border-radius:15px;padding:23px;
+  box-shadow:0 20px 70px #000b;
+}
+.modal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}
+.modal-top h2{font-size:18px;font-weight:normal;letter-spacing:2px;color:#f1dfb6}
+.close{border:0;background:none;color:#aab7cb;font-size:23px}
+.profile-name{font-size:25px;color:#f1dfb6;margin-bottom:5px}
+.profile-group{font-size:11px;color:#9eb6d8;letter-spacing:2px;margin-bottom:18px}
+.profile-row{padding:12px 0;border-top:1px solid #ffffff18}
+.profile-label{font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:7px}
+.profile-text{font-size:13px;line-height:1.9;color:#d1d8e2;white-space:pre-wrap;overflow-wrap:anywhere}
+.modal-actions{display:flex;gap:8px;margin-top:17px;flex-wrap:wrap}
+.modal-actions button{flex:1}
+#toast{
+  position:fixed;z-index:20;left:50%;bottom:25px;transform:translate(-50%,20px);
+  padding:10px 17px;border-radius:20px;background:#1b2b45;
+  border:1px solid #b69b65;color:#f5e5c0;font-size:12px;
+  opacity:0;pointer-events:none;transition:.25s;
+}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:700px){
+  header{height:72px;padding:10px 13px}
+  .brand-mark{font-size:24px}
+  .brand h1{font-size:14px;letter-spacing:2px}
+  .brand p{font-size:8px}
+  .header-count{display:none}
+  .tool{padding:7px 9px;font-size:10px}
+  #main{height:calc(100vh - 72px)}
+  #side{left:9px;top:9px;width:155px;padding:10px}
+  .side-title{font-size:9px;margin-bottom:8px}
+  #search{padding:7px;font-size:11px;margin-bottom:8px}
+  .legend{gap:7px 3px}
+  .legend-item{font-size:9px}
+  .side-note{font-size:9px;margin-top:8px;padding-top:7px}
+  #bottom{right:8px;bottom:12px;gap:5px}
+  #bottom .tool{padding:7px 9px}
+  #status{bottom:57px;font-size:9px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- 蓝色银河背景 -->
+<div id="skyBackground">
+
+  <div class="galaxy"></div>
+  <div class="blue-mist"></div>
+  <div class="galaxy-ribbon"></div>
+  <div class="blue-shimmer"></div>
+
+  <div class="blue-particles">
+    <span style="--x:10%;--y:25%;--size:3px;--duration:7s"></span>
+    <span style="--x:25%;--y:70%;--size:5px;--duration:9s;--delay:2s"></span>
+    <span style="--x:42%;--y:35%;--size:2px;--duration:6s;--delay:1s"></span>
+    <span style="--x:58%;--y:80%;--size:4px;--duration:11s;--delay:3s"></span>
+    <span style="--x:73%;--y:20%;--size:3px;--duration:8s;--delay:1s"></span>
+    <span style="--x:88%;--y:55%;--size:5px;--duration:10s;--delay:4s"></span>
+    <span style="--x:18%;--y:88%;--size:2px;--duration:8s;--delay:2s"></span>
+    <span style="--x:65%;--y:45%;--size:3px;--duration:7s;--delay:3s"></span>
+    <span style="--x:35%;--y:15%;--size:4px;--duration:12s;--delay:1s"></span>
+    <span style="--x:80%;--y:90%;--size:2px;--duration:9s;--delay:5s"></span>
+    <span style="--x:50%;--y:55%;--size:3px;--duration:10s;--delay:2s"></span>
+    <span style="--x:8%;--y:60%;--size:4px;--duration:9s;--delay:4s"></span>
+    <span style="--x:92%;--y:30%;--size:3px;--duration:8s;--delay:2s"></span>
+    <span style="--x:45%;--y:90%;--size:2px;--duration:11s;--delay:3s"></span>
+    <span style="--x:28%;--y:45%;--size:3px;--duration:7s;--delay:5s"></span>
+    <span style="--x:70%;--y:72%;--size:4px;--duration:10s;--delay:1s"></span>
+  </div>
+
+  <div class="meteor-layer">
+    <div class="meteor"></div>
+    <div class="meteor"></div>
+    <div class="meteor"></div>
+  </div>
+
+  <div class="galaxy-shade"></div>
+</div>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark">✦</div>
+    <div>
+      <h1>NANYU · FRIEND GALAXY</h1>
+      <p>MY LITTLE UNIVERSE · 星际关系档案</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="header-count" id="countText"></span>
+    <button class="tool" id="editBtn" onclick="toggleEdit()">✎ 编辑星图</button>
+  </div>
+</header>
+
+<main id="main">
+  <aside id="side">
+    <div class="side-title">✧ CONSTELLATION</div>
+    <input id="search" placeholder="搜索好友名字..." oninput="searchPeople(this.value)">
+    <div class="legend">
+      <div class="legend-item"><i class="dot"></i>南神</div>
+      <div class="legend-item"><i class="dot" style="color:#9dbde8;background:#9dbde8"></i>徒弟</div>
+      <div class="legend-item"><i class="dot" style="color:#e5c98d;background:#e5c98d"></i>家人</div>
+      <div class="legend-item"><i class="dot" style="color:#91d4ca;background:#91d4ca"></i>朋友</div>
+      <div class="legend-item"><i class="dot" style="color:#c5a8ee;background:#c5a8ee"></i>信徒</div>
+      <div class="legend-item"><i class="dot" style="color:#d58bab;background:#d58bab"></i>其他</div>
+    </div>
+    <div class="side-note">
+      每一颗星星都代表一段相遇。<br>
+      点击星点查看档案，点击连线查看关系。
+    </div>
+  </aside>
+
+  <svg id="map" viewBox="0 0 1200 850" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="centerGlow">
+        <stop offset="0" stop-color="#d9bd80" stop-opacity=".15"/>
+        <stop offset="1" stop-color="#d9bd80" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="4" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <g id="world">
+      <circle cx="500" cy="300" r="300" fill="url(#centerGlow)"/>
+      <g id="backgroundStars"></g>
+      <g id="lines"></g>
+      <g id="people"></g>
+    </g>
+  </svg>
+
+  <div id="status">✦ TAP A STAR TO OPEN ITS PROFILE ✦</div>
+
+  <div id="bottom">
+    <button class="tool" onclick="zoom(1.2)">＋</button>
+    <button class="tool" onclick="zoom(.83)">－</button>
+    <button class="tool" onclick="fitAll()">全图</button>
+    <button class="tool" onclick="addFriend()" id="addBtn" style="display:none">＋好友</button>
+    <button class="tool" onclick="addRelation()" id="relationBtn" style="display:none">＋关系</button>
+    <button class="tool" onclick="exportData()">导出数据</button>
+  </div>
+</main>
+
+<div id="modal">
+  <div class="modal-card">
+    <div class="modal-top">
+      <h2 id="modalTitle">FRIEND PROFILE</h2>
+      <button class="close" onclick="closeModal()">×</button>
+    </div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+const defaultFriends = [
+{id:"me",name:"南隅",group:"南神",x:524.7168285177521,y:273.83071275744123,time:"——",review:"超绝漂亮可爱帅气飒气五颜六色五彩缤纷七彩阳光摇摆不定黑吉他高冷冰山热情外热内冷顶级桃花味alpha桃花妖",note:"人见人爱花见花开自带奶香味超有魅力的万迷猫猫界顶尖奶香味alpha的猫界太子"},
+{id:"student1",name:"涵",group:"大徒弟",x:190,y:160,time:"10岁认识到现在",review:"这个的话，人机一个，温柔有耐心，不喜欢吵架，主张和平氛围，人特别好啊，很容易被欺负的这个，isfp\n",note:"涵鸡"},
+{id:"student2",name:"星昼",group:"二徒弟",x:52.86722583375246,y:498.00145295802656,time:"也是很久了啊我不记得",review:"重感情，有点傻白甜，呆呆的，也是呆呆的给别人骗的，很有义气，esfp",note:"星昼"},
+{id:"guardian",name:"面包",group:"面大宝",x:759.8347369996876,y:220.3141648538791,time:"6月多，忘记几时了",review:"人很好啊就，虽然有时候抽风抽风的，但是人平常还是挺正经的，intp",note:"我的监护"},
+{id:"child",name:"塊塊",group:"小登",x:799.0859254426693,y:564.0378626972804,time:"很久了",review:"我现实中最好的朋友，铁父子，她人看着也是疯疯的，实际上心思细腻，敏感，很会观察别人的情绪，还有点呆呆笨笨的，infj",note:"我儿子"},
+{id:"friend1",name:"荷包",group:"最虔诚的信徒",x:404.82111544707607,y:-178.16119945612726,time:"不记得了，我没去特地记的",review:"人呆呆的还挺害羞，我夸几句就害羞，喜欢我夸夸，是孤最好的信徒！infp",note:"小荷包"},
+{id:"friend2",name:"酒语",group:"姐妹",x:172.30490282432973,y:-161.28148186532042,time:"——",review:"这个也是人机来的，intj",note:"阿梦"},
+{id:"p_1794240752857",name:"烨",group:"干妈",x:411.53320648102465,y:645.6599171389892,time:"我忘记了",review:"很好的干妈！护短，跟大宝很好！她们是好姐妹！",note:"干妈"},
+{id:"p_1794240929116",name:"千屿",group:"朋友",x:988.1919954024996,y:-178.80861422422032,time:"——",review:"数学很好，天才一个，会弹琴，爱讲话，喜欢边跑图边讲话，情绪比较稳定，很有趣的一个人，intp",note:"yx"},
+{id:"p_1794241045274",name:"小歪",group:"普通好友",x:788.7617777063047,y:-279.9347672830073,time:"——",review:"人很活泼很可爱，喜欢穿五颜六色的衣服（在我星盘长这样）",note:"小歪"},
+{id:"p_1794241098247",name:"马铃薯",group:"普通好友",x:604.6656744877079,y:-405.55696350136907,time:"——",review:"也是很可爱的一个光崽，情绪在我眼里是算稳定的，不会突然暴躁这样，跟小歪是好朋友！",note:"马铃薯"},
+{id:"p_1794241369861",name:"泠",group:"信徒",x:117.11347286145883,y:677.7521597380436,time:"——",review:"看起来应该是个抽象派，我没记错的话是infp来着，很可爱的一个人，社交能力算是扛扛的！",note:"最会乱讲话的信徒"},
+{id:"p_1794241666618",name:"墨",group:"好朋友",x:-229.40213178282485,y:-186.90123482201466,time:"——",review:"enfj，情绪非常非常稳定的一个小朋友！不管说了什么她都会仔细回你，很温柔，没看过她发火，就是特别忙，没什么时间能玩在一起！",note:"墨墨"},
+{id:"p_1794241902076",name:"Sky",group:"朋友",x:1085.8482902586795,y:419.3491692451279,time:"——",review:"很可爱的一个外国人！热心，乐于助人是她的代名词，很友善！",note:"Sky"},
+{id:"p_1794241996978",name:"潼",group:"朋友",x:582.5418071550511,y:808.3897890278782,time:"——",review:"算是几面之交的朋友，很可爱的一个人，会拉小提琴超厉害！",note:"潼"},
+{id:"p_1794242111358",name:"悦悦",group:"信徒",x:156.7475493263168,y:792.5677600462371,time:"——",review:"infp，是一个很好的人，主动，很漂亮，对孩子都是鼓励式教育的，我很敬佩她，因为我都是放养式教育",note:"最可爱的信徒"},
+{id:"p_1794242202395",name:"晴",group:"朋友",x:-312.75266848392334,y:864.6826117000569,time:"——",review:"isfp，人很好，我，星昼和她之前经常一起跑图，她有打工，自从打工后就开始渐渐少联系了",note:"日青"}
+];
+
+const defaultRelations = [
+{from:"student1",to:"student2",label:"师兄弟",description:"两个徒弟之间的关系。",color:"#9dbde8"},
+{from:"guardian",to:"child",label:"爷孙",description:"他们是爷孙两的关系",color:"#e5c98d"},
+{from:"me",to:"guardian",label:"监护",description:"监护崽崽关系，很和平很平和的关系，是光遇唯一一个让我认识很久的",color:"#e5c98d"},
+{from:"me",to:"child",label:"崽子",description:"他们是父子",color:"#e5c98d"},
+{from:"me",to:"friend1",label:"信徒",description:"他们是上下属关系",color:"#28479c"},
+{from:"me",to:"student1",label:"徒弟",description:"他们是师徒。",color:"#a13d6a"},
+{from:"me",to:"student2",label:"徒弟",description:"他们是师徒",color:"#872761"},
+{from:"me",to:"friend2",label:"妹妹",description:"他们是姐妹。",color:"#e5c98d"},
+{from:"student1",to:"friend2",label:"闺蜜",description:"他们是朋友。",color:"#399ead"},
+{from:"me",to:"p_1794240752857",label:"干妈",description:"——",color:"#e5c98d"},
+{from:"guardian",to:"p_1794240752857",label:"姐妹",description:"——",color:"#4a6ec2"},
+{from:"child",to:"p_1794240752857",label:"干奶孙",description:"他们是奶奶和孙子的关系",color:"#27a5c4"},
+{from:"me",to:"p_1794240929116",label:"朋友",description:"他们是朋友。",color:"#184f0d"},
+{from:"p_1794240929116",to:"child",label:"朋友",description:"他们是朋友。",color:"#3e2870"},
+{from:"me",to:"p_1794241045274",label:"朋友",description:"他们是朋友。",color:"#7723a1"},
+{from:"me",to:"p_1794241098247",label:"朋友",description:"他们是朋友。",color:"#1e8577"},
+{from:"p_1794241045274",to:"p_1794241098247",label:"好朋友",description:"他们是朋友。",color:"#7c1f91"},
+{from:"student2",to:"p_1794240929116",label:"好朋友",description:"他们是朋友。",color:"#324073"},
+{from:"student2",to:"child",label:"好朋友",description:"他们是朋友。",color:"#1a2857"},
+{from:"me",to:"p_1794241369861",label:"信徒",description:"他们是上下属",color:"#492f6e"},
+{from:"me",to:"p_1794241666618",label:"好朋友",description:"他们是朋友。",color:"#6b1a5b"},
+{from:"student1",to:"p_1794241666618",label:"朋友",description:"他们是朋友。",color:"#28525c"},
+{from:"friend2",to:"p_1794241666618",label:"朋友",description:"他们是朋友。",color:"#367568"},
+{from:"me",to:"p_1794241902076",label:"朋友",description:"他们是朋友。",color:"#e5c98d"},
+{from:"me",to:"p_1794241996978",label:"朋友",description:"他们是朋友。",color:"#3a4d47"},
+{from:"me",to:"p_1794242111358",label:"信徒",description:"他们是朋友。",color:"#286947"},
+{from:"me",to:"p_1794242202395",label:"朋友",description:"他们是朋友。",color:"#b3ad84"},
+{from:"p_1794242202395",to:"student2",label:"朋友",description:"他们是朋友。",color:"#e5c98d"}
+];
+
+let friends = JSON.parse(localStorage.getItem("myFriendGalaxy")||"null")?.friends || defaultFriends;
+let relations = JSON.parse(localStorage.getItem("myFriendGalaxy")||"null")?.relations || defaultRelations;
+let editMode=false,selectedPerson=null,selectedRelation=null;
+let view={x:-450,y:-650,w:2100,h:1500};
+let pointer=null,draggingPerson=null,dragMoved=false;
+
+const svg=document.getElementById("map");
+const world=document.getElementById("world");
+const peopleLayer=document.getElementById("people");
+const linesLayer=document.getElementById("lines");
+
+function saveData(){
+  localStorage.setItem("myFriendGalaxy",JSON.stringify({friends,relations}));
+}
+function esc(s){
+  return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),1800);
+}
+function person(id){return friends.find(p=>p.id===id)}
+function initials(name){return (name||"?").trim().slice(0,1)}
+function render(){
+  document.getElementById("countText").textContent=
+    friends.length+" FRIENDS  ·  "+relations.length+" CONNECTIONS";
+  drawStars();drawLines();drawPeople();saveData();
+}
+function drawStars(){
+  const g=document.getElementById("backgroundStars");
+  let s="";
+  for(let i=0;i<100;i++){
+    const x=((i*173+51)%1550)-300;
+    const y=((i*293+27)%1250)-200;
+    const r=i%9===0?1.8:.8;
+    s+=`<circle cx="${x}" cy="${y}" r="${r}" fill="${i%4===0?"#e8ce91":"#b9cbe5"}" opacity="${i%3===0?".75":".35"}"/>`;
+  }
+  g.innerHTML=s;
+}
+function drawLines(){
+  let html="";
+  relations.forEach((r,i)=>{
+    const a=person(r.from),b=person(r.to);
+    if(!a||!b)return;
+    const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+    const selected=selectedRelation===i;
+    html+=`
+      <g data-rel="${i}">
+        <line class="edge-hit" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" />
+        <line class="edge-visible" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"
+          stroke="${r.color||"#e5c98d"}" opacity="${selected?1:.75}" stroke-width="${selected?4:2.1}"/>
+        <text class="edge-label" x="${mx}" y="${my-8}">${esc(r.label)}</text>
+      </g>`;
+  });
+  linesLayer.innerHTML=html;
+  linesLayer.querySelectorAll("[data-rel]").forEach(g=>{
+    g.addEventListener("click",e=>{
+      e.stopPropagation();
+      if(dragMoved)return;
+      selectedRelation=Number(g.dataset.rel);
+      selectedPerson=null;
+      drawPeople();drawLines();
+      showRelation(selectedRelation);
+    });
+  });
+}
+function drawPeople(){
+  let html="";
+  friends.forEach(p=>{
+    const selected=selectedPerson===p.id;
+    html+=`
+    <g class="person ${selected?"selected":""}" data-id="${esc(p.id)}"
+      transform="translate(${p.x},${p.y})">
+      <circle class="halo" r="39"/>
+      <rect x="-48" y="-35" width="96" height="70" rx="12"/>
+      <circle class="avatar" cx="0" cy="-12" r="16"/>
+      <text class="initial" x="0" y="-6">${esc(initials(p.name))}</text>
+      <text class="pname" x="0" y="17">${esc(p.name)}</text>
+      <text class="pgroup" x="0" y="29">${esc(p.group)}</text>
+    </g>`;
+  });
+  peopleLayer.innerHTML=html;
+  peopleLayer.querySelectorAll(".person").forEach(el=>{
+    el.addEventListener("pointerdown",startPersonDrag);
+    el.addEventListener("click",e=>{
+      e.stopPropagation();
+      if(dragMoved){dragMoved=false;return}
+      selectedPerson=el.dataset.id;selectedRelation=null;
+      drawPeople();drawLines();
+      showPerson(selectedPerson);
+    });
+  });
+}
+function showPerson(id){
+  const p=person(id);if(!p)return;
+  document.getElementById("modalTitle").textContent="FRIEND PROFILE";
+  document.getElementById("modalContent").innerHTML=`
+    <div class="profile-name">${esc(p.name)}</div>
+    <div class="profile-group">${esc(p.group)}</div>
+    <div class="profile-row"><div class="profile-label">✦ 相识时间</div><div class="profile-text">${esc(p.time||"未填写")}</div></div>
+    <div class="profile-row"><div class="profile-label">✦ 关于这个人</div><div class="profile-text">${esc(p.review||"暂无评价")}</div></div>
+    <div class="profile-row"><div class="profile-label">✦ 备注 / 称呼</div><div class="profile-text">${esc(p.note||"暂无备注")}</div></div>
+    ${editMode?`<div class="modal-actions"><button class="tool" onclick="editPerson('${p.id}')">修改档案</button><button class="tool" onclick="deletePerson('${p.id}')">删除好友</button></div>`:""}`;
+  openModal();
+}
+function showRelation(i){
+  const r=relations[i];if(!r)return;
+  const a=person(r.from),b=person(r.to);
+  document.getElementById("modalTitle").textContent="RELATIONSHIP";
+  document.getElementById("modalContent").innerHTML=`
+    <div class="profile-name">${esc(r.label)}</div>
+    <div class="profile-group">${esc(a?.name||"?")}　✦　${esc(b?.name||"?")}</div>
+    <div class="profile-row"><div class="profile-label">✦ 关系描述</div><div class="profile-text">${esc(r.description||"暂无描述")}</div></div>
+    <div class="profile-row"><div class="profile-label">✦ 关系颜色</div><div class="profile-text"><span style="display:inline-block;width:35px;height:8px;border-radius:5px;background:${esc(r.color)}"></span> ${esc(r.color)}</div></div>
+    ${editMode?`<div class="modal-actions"><button class="tool" onclick="editRelation(${i})">修改关系</button><button class="tool" onclick="deleteRelation(${i})">删除关系</button></div>`:""}`;
+  openModal();
+}
+function openModal(){document.getElementById("modal").classList.add("show")}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+document.getElementById("modal").addEventListener("click",e=>{
+  if(e.target.id==="modal")closeModal();
+});
+
+function toggleEdit(){
+  editMode=!editMode;
+  const b=document.getElementById("editBtn");
+  b.classList.toggle("active",editMode);
+  b.textContent=editMode?"✓ 完成编辑":"✎ 编辑星图";
+  document.getElementById("addBtn").style.display=editMode?"block":"none";
+  document.getElementById("relationBtn").style.display=editMode?"block":"none";
+  toast(editMode?"已进入编辑模式：可以拖动好友星点":"编辑已保存");
+}
+function editPerson(id){
+  const p=person(id);if(!p)return;
+  const name=prompt("好友名字：",p.name);if(name===null)return;
+  const group=prompt("身份 / 分类：",p.group);if(group===null)return;
+  const time=prompt("相识时间：",p.time);if(time===null)return;
+  const review=prompt("你的评价：",p.review);if(review===null)return;
+  const note=prompt("备注 / 称呼：",p.note);if(note===null)return;
+  Object.assign(p,{name,group,time,review,note});
+  render();closeModal();showPerson(id);toast("档案已更新");
+}
+function deletePerson(id){
+  if(!confirm("确定要删除这位好友吗？相关关系线也会一起删除。"))return;
+  friends=friends.filter(p=>p.id!==id);
+  relations=relations.filter(r=>r.from!==id&&r.to!==id);
+  selectedPerson=null;closeModal();render();toast("好友已删除");
+}
+function addFriend(){
+  const name=prompt("新好友的名字：");if(!name)return;
+  const group=prompt("身份 / 分类：","朋友")||"朋友";
+  const id="friend_"+Date.now();
+  friends.push({id,name,group,x:524+Math.random()*180-90,y:270+Math.random()*180-90,time:"待填写",review:"",note:""});
+  render();fitAll();toast("新好友已加入星图");
+}
+function addRelation(){
+  if(friends.length<2)return;
+  const from=prompt("输入关系起点的好友名字：");if(!from)return;
+  const to=prompt("输入关系终点的好友名字：");if(!to)return;
+  const a=friends.find(p=>p.name===from),b=friends.find(p=>p.name===to);
+  if(!a||!b){toast("没有找到对应名字，请检查输入");return}
+  if(a.id===b.id){toast("不能把自己和自己连接哦");return}
+  const label=prompt("关系名称：","朋友");if(!label)return;
+  const description=prompt("关系描述：","他们是朋友。")||"";
+  const color=prompt("关系颜色（十六进制）：","#e5c98d")||"#e5c98d";
+  relations.push({from:a.id,to:b.id,label,description,color});
+  render();toast("关系线已添加");
+}
+function editRelation(i){
+  const r=relations[i];if(!r)return;
+  const label=prompt("关系名称：",r.label);if(label===null)return;
+  const description=prompt("关系描述：",r.description);if(description===null)return;
+  const color=prompt("关系颜色（例如 #e5c98d）：",r.color);if(color===null)return;
+  Object.assign(r,{label,description,color});
+  render();closeModal();showRelation(i);toast("关系已修改");
+}
+function deleteRelation(i){
+  if(!confirm("确定删除这条关系线吗？"))return;
+  relations.splice(i,1);selectedRelation=null;
+  closeModal();render();toast("关系线已删除");
+}
+function exportData(){
+  const data=JSON.stringify({friends,relations},null,2);
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(data).then(()=>toast("数据已复制！记得保存到备忘录")).catch(()=>downloadData(data));
+  }else downloadData(data);
+}
+function downloadData(data){
+  const blob=new Blob([data],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download="南隅好友星图备份.json";a.click();
+  URL.revokeObjectURL(url);toast("备份文件已导出");
+}
+function searchPeople(value){
+  const q=value.trim().toLowerCase();
+  peopleLayer.querySelectorAll(".person").forEach(el=>{
+    const p=person(el.dataset.id);
+    el.classList.toggle("dim",!!q&&!(`${p.name} ${p.group}`.toLowerCase().includes(q)));
+  });
+  if(q){
+    const p=friends.find(p=>(p.name+" "+p.group).toLowerCase().includes(q));
+    if(p){selectedPerson=p.id;drawPeople();drawLines()}
+  }else{selectedPerson=null;drawPeople();drawLines()}
+}
+
+function setView(){svg.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`)}
+function fitAll(){
+  if(!friends.length)return;
+  const xs=friends.map(p=>p.x),ys=friends.map(p=>p.y);
+  const minX=Math.min(...xs)-150,maxX=Math.max(...xs)+150;
+  const minY=Math.min(...ys)-140,maxY=Math.max(...ys)+140;
+  const box=svg.getBoundingClientRect();
+  const aspect=box.width/box.height;
+  let w=maxX-minX,h=maxY-minY;
+  if(w/h<aspect)w=h*aspect;else h=w/aspect;
+  view={x:(minX+maxX-w)/2,y:(minY+maxY-h)/2,w,h};
+  setView();
+}
+function zoom(factor){
+  const cx=view.x+view.w/2,cy=view.y+view.h/2;
+  view.w*=factor;view.h*=factor;
+  view.x=cx-view.w/2;view.y=cy-view.h/2;setView();
+}
+function svgPoint(e){
+  const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;
+  return p.matrixTransform(world.getScreenCTM().inverse());
+}
+function startPersonDrag(e){
+  if(!editMode)return;
+  e.stopPropagation();
+  const el=e.currentTarget;
+  draggingPerson=el.dataset.id;
+  dragMoved=false;
+  const p=svgPoint(e);
+  pointer={x:p.x,y:p.y,px:person(draggingPerson).x,py:person(draggingPerson).y};
+  svg.setPointerCapture(e.pointerId);
+}
+svg.addEventListener("pointerdown",e=>{
+  if(draggingPerson)return;
+  pointer={x:e.clientX,y:e.clientY,viewX:view.x,viewY:view.y};
+  svg.setPointerCapture(e.pointerId);
+});
+svg.addEventListener("pointermove",e=>{
+  if(draggingPerson&&pointer){
+    const p=svgPoint(e),f=person(draggingPerson);
+    if(!f)return;
+    const dx=p.x-pointer.x,dy=p.y-pointer.y;
+    if(Math.abs(dx)+Math.abs(dy)>2)dragMoved=true;
+    f.x=pointer.px+dx;f.y=pointer.py+dy;
+    drawLines();drawPeople();
+    return;
+  }
+  if(pointer){
+    const dx=(e.clientX-pointer.x)*view.w/svg.clientWidth;
+    const dy=(e.clientY-pointer.y)*view.h/svg.clientHeight;
+    view.x=pointer.viewX-dx;view.y=pointer.viewY-dy;setView();
+  }
+});
+svg.addEventListener("pointerup",()=>{
+  if(draggingPerson&&dragMoved){saveData();toast("好友位置已保存")}
+  draggingPerson=null;pointer=null;
+});
+svg.addEventListener("pointercancel",()=>{draggingPerson=null;pointer=null});
+// 鼠标滚轮缩放
+svg.addEventListener("wheel",e=>{
+  e.preventDefault();
+  zoom(e.deltaY<0?.9:1.1);
+},{passive:false});
+
+// 手机双指捏合缩放
+let pinchStartDistance = 0;
+let pinchStartView = null;
+
+function getDistance(a,b){
+  return Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);
+}
+
+svg.addEventListener("touchstart",e=>{
+  if(e.touches.length===2){
+    pinchStartDistance=getDistance(e.touches[0],e.touches[1]);
+    pinchStartView={...view};
+    pointer=null;
+    draggingPerson=null;
+  }
+},{passive:true});
+
+svg.addEventListener("touchmove",e=>{
+  if(e.touches.length!==2 || !pinchStartView)return;
+
+  e.preventDefault();
+
+  const distance=getDistance(e.touches[0],e.touches[1]);
+  if(!pinchStartDistance)return;
+
+  const factor=pinchStartDistance/distance;
+  const centerX=pinchStartView.x+pinchStartView.w/2;
+  const centerY=pinchStartView.y+pinchStartView.h/2;
+
+  view.w=pinchStartView.w*factor;
+  view.h=pinchStartView.h*factor;
+  view.x=centerX-view.w/2;
+  view.y=centerY-view.h/2;
+
+  setView();
+},{passive:false});
+
+svg.addEventListener("touchend",e=>{
+  if(e.touches.length<2){
+    pinchStartDistance=0;
+    pinchStartView=null;
+  }
+});
+ 
+render();
+setTimeout(fitAll,100);
+window.addEventListener("resize",fitAll);
+</script>
+</body>
+</html>

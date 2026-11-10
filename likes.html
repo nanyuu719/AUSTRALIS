@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Little Universe</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --gold: #d6b77d;
+    --light-gold: #f0dfb7;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at 20% 10%, #1b2b4b, transparent 45%),
+        radial-gradient(ellipse at 80% 90%, #172039, transparent 45%),
+        #050916;
+    color: #e8dfcc;
+    font-family: Georgia, "Times New Roman", "Songti SC", serif;
+    overflow-x: hidden;
+}
+
+/* 星空 */
+#stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.star {
+    position: absolute;
+    color: var(--gold);
+    animation: twinkle 3s infinite alternate;
+}
+
+@keyframes twinkle {
+    from { opacity: .15; }
+    to { opacity: .9; }
+}
+
+/* 页面 */
+.page {
+    position: relative;
+    z-index: 1;
+    width: 94%;
+    max-width: 1250px;
+    margin: auto;
+    padding: 35px 0 60px;
+}
+
+/* 标题 */
+.header {
+    text-align: center;
+    padding: 30px 10px 45px;
+    position: relative;
+}
+
+.back {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 3px;
+    border-bottom: 1px solid #9d8155;
+    padding-bottom: 6px;
+}
+
+.subtitle {
+    color: #b99b68;
+    font-size: 10px;
+    letter-spacing: 6px;
+    margin-bottom: 14px;
+}
+
+h1 {
+    color: var(--light-gold);
+    font-size: clamp(32px, 5vw, 55px);
+    font-weight: normal;
+    letter-spacing: 5px;
+    text-shadow: 0 0 25px rgba(212,177,112,.25);
+}
+
+.header-line {
+    width: 170px;
+    height: 1px;
+    background: linear-gradient(
+        90deg, transparent, var(--gold), transparent
+    );
+    margin: 20px auto;
+}
+
+.intro {
+    color: #a8a9b8;
+    font-size: 12px;
+    letter-spacing: 2px;
+    line-height: 2;
+}
+
+.instruction {
+    margin-top: 15px;
+    color: #9c8b6e;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+/* 拍立得墙 */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 35px 25px;
+    padding: 15px 15px 30px;
+}
+
+/* 拍立得 */
+.polaroid {
+    position: relative;
+    padding: 11px 11px 17px;
+    background: #e8e0d0;
+    color: #272638;
+    box-shadow: 0 12px 30px rgba(0,0,0,.45);
+    cursor: pointer;
+    transition: transform .35s ease, box-shadow .35s ease;
+    transform: rotate(var(--angle));
+    border: 1px solid rgba(255,255,255,.5);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.polaroid:nth-child(1) { --angle: -2deg; }
+.polaroid:nth-child(2) { --angle: 2deg; }
+.polaroid:nth-child(3) { --angle: -1deg; }
+.polaroid:nth-child(4) { --angle: 2deg; }
+.polaroid:nth-child(5) { --angle: -2deg; }
+.polaroid:nth-child(6) { --angle: 1deg; }
+
+.polaroid:hover {
+    transform: translateY(-9px) rotate(0deg) scale(1.025);
+    box-shadow: 0 20px 40px rgba(0,0,0,.6);
+}
+
+/* 照片 */
+.photo {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background-size: cover;
+    background-position: center;
+    background-color: #172039;
+    border: 1px solid rgba(0,0,0,.15);
+}
+
+/* 拍立得文字 */
+.polaroid-caption {
+    text-align: center;
+    padding-top: 14px;
+}
+
+.polaroid-caption h2 {
+    font-size: 19px;
+    font-weight: normal;
+    letter-spacing: 2px;
+}
+
+.polaroid-caption p {
+    font-size: 9px;
+    color: #82775f;
+    letter-spacing: 2px;
+    margin-top: 5px;
+}
+
+.photo-number {
+    position: absolute;
+    top: 17px;
+    right: 17px;
+    background: rgba(5,10,20,.65);
+    color: #f0dfb7;
+    padding: 4px 7px;
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+/* 弹出遮罩 */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2,5,15,.84);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transition: .35s;
+}
+
+.overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 放大展示框 */
+.viewer {
+    position: fixed;
+    z-index: 11;
+    width: min(430px, 88vw);
+    max-height: 85vh;
+    overflow-y: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -46%) scale(.92);
+    opacity: 0;
+    visibility: hidden;
+    transition: .4s ease;
+    background: #e8e0d0;
+    color: #272638;
+    padding: 13px 13px 22px;
+    box-shadow: 0 25px 70px rgba(0,0,0,.7);
+    border: 1px solid #d6b77d;
+}
+
+.viewer.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.viewer-photo {
+    width: 100%;
+    height: min(38vh, 270px);
+    background-size: cover;
+    background-position: center;
+    background-color: #172039;
+}
+
+.viewer-number {
+    text-align: center;
+    color: #96794e;
+    font-size: 10px;
+    letter-spacing: 4px;
+    margin-top: 18px;
+}
+
+.viewer h2 {
+    text-align: center;
+    font-size: 27px;
+    font-weight: normal;
+    letter-spacing: 3px;
+    margin-top: 8px;
+}
+
+.viewer-en {
+    text-align: center;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: #8a7b61;
+    margin-top: 6px;
+}
+
+.viewer-line {
+    width: 85px;
+    height: 1px;
+    background: linear-gradient(
+        90deg, transparent, #b99b68, transparent
+    );
+    margin: 17px auto;
+}
+
+.viewer-description {
+    font-family: "Songti SC", "SimSun", serif;
+    font-size: 14px;
+    line-height: 2;
+    letter-spacing: 1px;
+    padding: 0 10px;
+    text-align: center;
+    white-space: pre-line;
+}
+
+.viewer-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.viewer-tag {
+    border: 1px solid #b99b68;
+    color: #826c49;
+    font-family: sans-serif;
+    font-size: 10px;
+    padding: 5px 11px;
+}
+
+.viewer-close {
+    display: block;
+    margin: 22px auto 0;
+    padding: 8px 20px;
+    background: transparent;
+    border: 1px solid #b99b68;
+    color: #826c49;
+    letter-spacing: 3px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+/* 底部 */
+.footer {
+    text-align: center;
+    margin-top: 35px;
+    color: #a18b68;
+    font-size: 10px;
+    letter-spacing: 3px;
+    line-height: 2;
+}
+
+.footer span {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: var(--gold);
+}
+
+/* 手机 */
+@media (max-width: 650px) {
+    .page {
+        padding-top: 55px;
+    }
+
+    .gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 25px 15px;
+        padding: 10px 5px;
+    }
+
+    .polaroid {
+        padding: 7px 7px 12px;
+    }
+
+    .polaroid-caption h2 {
+        font-size: 15px;
+    }
+
+    .polaroid-caption p {
+        font-size: 8px;
+    }
+}
+
+@media (max-width: 360px) {
+    .gallery {
+        grid-template-columns: 1fr;
+        padding: 10px 25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="stars"></div>
+<div class="overlay" id="overlay"></div>
+
+<div class="page">
+
+<header class="header">
+    <a href="index.html" class="back">← BACK</a>
+
+    <div class="subtitle">A COLLECTION OF THINGS I LOVE</div>
+
+    <h1>My Little Universe</h1>
+
+    <div class="header-line"></div>
+
+    <div class="intro">
+        A little world filled with my favourite things.
+    </div>
+
+    <div class="instruction">
+        ✦ PICK A PHOTO · EXPLORE MY WORLD ✦
+    </div>
+</header>
+
+<main class="gallery">
+
+    <div class="polaroid"
+         data-image="p.jpg"
+         data-number="NO. 01"
+         data-title="Music"
+         data-en="MELODIES & SOUNDS"
+         data-description="Are U Lost
+Time Machine
+Forest Mixtape
+Hopes and Dreams
+Golden Hour"
+         data-tags="纯音乐|温柔">
+        <div class="photo" style="background-image:url('p.jpg')"></div>
+        <div class="photo-number">01</div>
+        <div class="polaroid-caption">
+            <h2>Music</h2>
+            <p>MELODIES & SOUNDS</p>
+        </div>
+    </div>
+
+    <div class="polaroid"
+         data-image="g.jpg"
+         data-number="NO. 02"
+         data-title="Games"
+         data-en="MY GAME WORLD"
+         data-description="光遇！必须是光遇，爱玩好玩，但没什么很好的朋友"
+         data-tags="光是遇见，就很美好|因光而遇，因遇而散">
+        <div class="photo" style="background-image:url('g.jpg')"></div>
+        <div class="photo-number">02</div>
+        <div class="polaroid-caption">
+            <h2>Games</h2>
+            <p>MY GAME WORLD</p>
+        </div>
+    </div>
+
+    <div class="polaroid"
+         data-image="oc.jpg"
+         data-number="NO. 03"
+         data-title="Art & Creation"
+         data-en="MY CREATIVE SPACE"
+         data-description="一直都有在搞oc，还有世界观，但是坑大的填不完，尤其是小说的"
+         data-tags="画oc写oc|创造世界观">
+        <div class="photo" style="background-image:url('oc.jpg')"></div>
+        <div class="photo-number">03</div>
+        <div class="polaroid-caption">
+            <h2>Art & Creation</h2>
+            <p>MY CREATIVE SPACE</p>
+        </div>
+    </div>
+
+    <div class="polaroid"
+         data-image="rain.jpg"
+         data-number="NO. 04"
+         data-title="Aesthetics"
+         data-en="VISUAL INSPIRATION"
+         data-description="喜欢金色，谁懂金色的美丽..还喜欢很多小挂饰，好漂亮好招摇好喜欢，还喜欢雨天！"
+         data-tags="Golden|Rainy">
+        <div class="photo" style="background-image:url('rain.jpg')"></div>
+        <div class="photo-number">04</div>
+        <div class="polaroid-caption">
+            <h2>Aesthetics</h2>
+            <p>VISUAL INSPIRATION</p>
+        </div>
+    </div>
+
+    <div class="polaroid"
+         data-image="mb.jpg"
+         data-number="NO. 05"
+         data-title="Random Things"
+         data-en="LITTLE OBSESSIONS"
+         data-description="偶尔喜欢睡觉，喜欢独处，并不像表面上的那么热爱社交，还喜欢一直重新测mbti"
+         data-tags="睡觉|喜欢干的事">
+        <div class="photo" style="background-image:url('mb.jpg')"></div>
+        <div class="photo-number">05</div>
+        <div class="polaroid-caption">
+            <h2>Random Things</h2>
+            <p>LITTLE OBSESSIONS</p>
+        </div>
+    </div>
+
+    <div class="polaroid"
+         data-image="ig.jpeg"
+         data-number="NO. 06"
+         data-title="Comfort Zone"
+         data-en="MY LITTLE SAFE SPACE"
+         data-description="发呆是最舒服的事情，没有之一，睡觉是之二，乱画是之三"
+         data-tags="喜欢做的事|发呆的时刻">
+        <div class="photo" style="background-image:url('ig.jpeg')"></div>
+        <div class="photo-number">06</div>
+        <div class="polaroid-caption">
+            <h2>Comfort Zone</h2>
+            <p>MY LITTLE SAFE SPACE</p>
+        </div>
+    </div>
+
+</main>
+
+<footer class="footer">
+    <span>✦ ─── ✧ ─── ✦</span>
+    EVERY LITTLE THING HAS ITS OWN PLACE.
+</footer>
+
+</div>
+
+<!-- 独立展示框 -->
+<div class="viewer" id="viewer">
+    <div class="viewer-photo" id="viewerPhoto"></div>
+    <div class="viewer-number" id="viewerNumber"></div>
+    <h2 id="viewerTitle"></h2>
+    <div class="viewer-en" id="viewerEn"></div>
+    <div class="viewer-line"></div>
+    <div class="viewer-description" id="viewerDescription"></div>
+    <div class="viewer-tags" id="viewerTags"></div>
+    <button class="viewer-close" id="viewerClose">CLOSE ✧</button>
+</div>
+
+<script>
+// 星星
+const stars = document.getElementById("stars");
+
+for (let i = 0; i < 65; i++) {
+    const star = document.createElement("span");
+    star.className = "star";
+    star.textContent = Math.random() > .5 ? "✦" : "·";
+    star.style.left = Math.random() * 100 + "%";
+    star.style.top = Math.random() * 100 + "%";
+    star.style.fontSize = (Math.random() * 10 + 5) + "px";
+    star.style.animationDelay = Math.random() * 4 + "s";
+    stars.appendChild(star);
+}
+
+// 拍立得展示
+const overlay = document.getElementById("overlay");
+const viewer = document.getElementById("viewer");
+
+const viewerPhoto = document.getElementById("viewerPhoto");
+const viewerNumber = document.getElementById("viewerNumber");
+const viewerTitle = document.getElementById("viewerTitle");
+const viewerEn = document.getElementById("viewerEn");
+const viewerDescription = document.getElementById("viewerDescription");
+const viewerTags = document.getElementById("viewerTags");
+
+document.querySelectorAll(".polaroid").forEach(function(card) {
+
+    card.addEventListener("click", function() {
+
+        viewerPhoto.style.backgroundImage =
+            "url('" + card.dataset.image + "')";
+
+        viewerNumber.textContent = card.dataset.number;
+        viewerTitle.textContent = card.dataset.title;
+        viewerEn.textContent = card.dataset.en;
+        viewerDescription.textContent = card.dataset.description;
+
+        viewerTags.innerHTML = "";
+
+        card.dataset.tags.split("|").forEach(function(tagText) {
+            const tag = document.createElement("span");
+            tag.className = "viewer-tag";
+            tag.textContent = tagText;
+            viewerTags.appendChild(tag);
+        });
+
+        overlay.classList.add("show");
+        viewer.classList.add("show");
+    });
+});
+
+// 关闭
+function closeViewer() {
+    overlay.classList.remove("show");
+    viewer.classList.remove("show");
+}
+
+overlay.addEventListener("click", closeViewer);
+
+document.getElementById("viewerClose")
+    .addEventListener("click", closeViewer);
+
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") closeViewer();
+});
+</script>
+
+</body>
+</html>

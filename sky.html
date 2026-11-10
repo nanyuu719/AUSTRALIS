@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUSTRALIS · My Sky World</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+    --gold:#e8ce91;
+    --gold-light:#f8e9bd;
+    --blue:#a8c9e8;
+    --deep:#080d20;
+    --panel:rgba(16,25,52,.82);
+    --muted:#a5aec7;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+    min-height:100vh;
+    color:#f4f0e6;
+    font-family:Georgia,"Noto Serif SC",serif;
+    background:
+    linear-gradient(rgba(5,10,27,.84),rgba(5,10,27,.94)),
+    url("blue.png") center/cover fixed,#080d20;
+    overflow-x:hidden;
+}
+
+button{font:inherit}
+a{color:inherit;text-decoration:none}
+
+.page{width:min(1180px,92%);margin:auto}
+
+.stars{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-1;
+    background-image:
+    radial-gradient(2px 2px at 10% 20%,#f8e9bd 60%,transparent),
+    radial-gradient(1px 1px at 30% 70%,#fff 60%,transparent),
+    radial-gradient(2px 2px at 75% 15%,#e8ce91 60%,transparent),
+    radial-gradient(1px 1px at 90% 60%,#fff 60%,transparent),
+    radial-gradient(2px 2px at 55% 40%,#b6d8f5 60%,transparent);
+    background-size:230px 230px;
+    opacity:.65;
+}
+
+header{padding:35px 0 20px;text-align:center}
+
+.brand{
+    color:var(--gold);
+    letter-spacing:8px;
+    font-size:14px;
+}
+
+header h1{
+    font-size:clamp(35px,7vw,64px);
+    font-weight:normal;
+    letter-spacing:5px;
+    margin:16px 0 8px;
+    text-shadow:0 0 25px rgba(232,206,145,.25);
+}
+
+.subtitle{
+    color:var(--muted);
+    letter-spacing:4px;
+    font-size:12px;
+}
+
+nav{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:12px;
+    margin:28px 0 45px;
+}
+
+nav a{
+    padding:9px 17px;
+    border:1px solid rgba(232,206,145,.35);
+    border-radius:30px;
+    color:var(--gold-light);
+    font-size:12px;
+    transition:.3s;
+}
+
+nav a:hover{
+    background:rgba(232,206,145,.15);
+    border-color:var(--gold);
+}
+
+section{
+    margin:65px 0;
+    scroll-margin-top:25px;
+}
+
+.section-title{text-align:center;margin-bottom:30px}
+
+.section-title h2{
+    color:var(--gold);
+    font-size:27px;
+    font-weight:normal;
+    letter-spacing:4px;
+}
+
+.section-title p{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:9px;
+    letter-spacing:2px;
+}
+
+.panel{
+    background:var(--panel);
+    border:1px solid rgba(232,206,145,.23);
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 12px 40px rgba(0,0,0,.18);
+}
+
+/* 光崽档案 */
+
+.hero{
+    display:grid;
+    grid-template-columns:minmax(220px,.8fr) 1.2fr;
+    gap:35px;
+    align-items:center;
+}
+
+.avatar-frame{
+    border:1px solid var(--gold);
+    padding:9px;
+    border-radius:18px;
+    background:rgba(232,206,145,.06);
+}
+
+.avatar-frame img{
+    display:block;
+    width:100%;
+    aspect-ratio:4/5;
+    object-fit:cover;
+    border-radius:12px;
+}
+
+.hero-info h2{
+    color:var(--gold);
+    font-size:31px;
+    font-weight:normal;
+    margin-bottom:12px;
+}
+
+.hero-info .english{
+    color:var(--blue);
+    letter-spacing:3px;
+    font-size:12px;
+    margin-bottom:22px;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:13px;
+}
+
+.info-item{
+    border-bottom:1px solid rgba(232,206,145,.2);
+    padding:10px 0;
+}
+
+.info-item span{
+    display:block;
+    color:var(--muted);
+    font-size:11px;
+    margin-bottom:7px;
+}
+
+.info-item strong{
+    color:#f3e9d2;
+    font-size:14px;
+    font-weight:normal;
+}
+
+.motto{
+    color:var(--gold);
+    margin-top:25px;
+    font-style:italic;
+    letter-spacing:2px;
+}
+
+/* 装扮 */
+
+.outfit-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:17px;
+}
+
+.outfit{
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(232,206,145,.2);
+    border-radius:14px;
+    padding:10px;
+    text-align:center;
+}
+
+.outfit img{
+    width:100%;
+    aspect-ratio:1/1.2;
+    object-fit:cover;
+    border-radius:10px;
+    background:rgba(255,255,255,.04);
+}
+
+.outfit h3{
+    color:var(--gold);
+    font-size:14px;
+    font-weight:normal;
+    margin:12px 0 5px;
+}
+
+.outfit p{color:var(--muted);font-size:11px}
+
+/* 日常 */
+
+.daily-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.daily-card{
+    border:1px solid rgba(232,206,145,.2);
+    border-radius:14px;
+    padding:22px 15px;
+    text-align:center;
+    background:rgba(255,255,255,.035);
+}
+
+.daily-card .symbol{color:var(--gold);font-size:27px}
+
+.daily-card h3{
+    color:var(--gold-light);
+    font-size:15px;
+    font-weight:normal;
+    margin:12px 0 8px;
+}
+
+.daily-card p{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.8;
+}
+
+/* 跑图 */
+
+.route-list{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:13px;
+}
+
+.route{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:14px 15px;
+    background:rgba(255,255,255,.035);
+    border-radius:10px;
+    border:1px solid rgba(232,206,145,.14);
+}
+
+.route span{color:#e9e3d5;font-size:13px}
+.route strong{color:var(--gold);font-size:12px;font-weight:normal}
+
+/* 相册 */
+
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.gallery img{
+    width:100%;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    border-radius:12px;
+    border:1px solid rgba(232,206,145,.3);
+    background:rgba(255,255,255,.04);
+}
+
+/* 音乐收藏 */
+
+.music-intro{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    letter-spacing:2px;
+    line-height:2;
+    margin:-12px 0 28px;
+}
+
+.record-shelf{
+    display:flex;
+    gap:22px;
+    overflow-x:auto;
+    padding:15px 8px 25px;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:thin;
+    scrollbar-color:var(--gold) rgba(255,255,255,.08);
+    -webkit-overflow-scrolling:touch;
+}
+
+.record-shelf::-webkit-scrollbar{height:5px}
+.record-shelf::-webkit-scrollbar-thumb{
+    background:var(--gold);
+    border-radius:10px;
+}
+
+.record-card{
+    flex:0 0 235px;
+    scroll-snap-align:center;
+    cursor:pointer;
+    border:1px solid rgba(232,206,145,.2);
+    border-radius:15px;
+    background:linear-gradient(145deg,#172342,#0a1024);
+    padding:13px;
+    transition:.3s;
+    overflow:hidden;
+}
+
+.record-card:hover{
+    border-color:var(--gold);
+    transform:translateY(-4px);
+}
+
+.record-card.active{
+    border-color:var(--gold);
+    box-shadow:0 0 24px rgba(232,206,145,.13);
+}
+
+.album-stage{
+    position:relative;
+    width:100%;
+    aspect-ratio:1/1;
+    display:flex;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.album-cover{
+    position:relative;
+    z-index:2;
+    width:77%;
+    height:88%;
+    object-fit:cover;
+    border-radius:5px;
+    border:1px solid rgba(232,206,145,.45);
+    box-shadow:4px 6px 16px rgba(0,0,0,.5);
+    background:radial-gradient(circle at 30% 25%,#536d91,#17213d 55%,#0a1024);
+}
+
+.vinyl{
+    position:absolute;
+    z-index:1;
+    width:77%;
+    aspect-ratio:1;
+    right:0;
+    border-radius:50%;
+    background:
+    radial-gradient(circle,
+    #bda36d 0 5%,
+    #161616 5.5% 8%,
+    #303030 8.5% 9%,
+    #111 9.5% 25%,
+    #252525 25.5% 26%,
+    #111 26.5% 43%,
+    #292929 43.5% 44%,
+    #111 44.5% 60%,
+    #292929 60.5% 61%,
+    #111 61.5% 100%);
+    box-shadow:4px 7px 17px rgba(0,0,0,.55);
+    transition:.45s;
+}
+
+.record-card.active .vinyl{transform:translateX(15%)}
+
+.record-card.active.playing .vinyl{
+    animation:spin 3s linear infinite;
+}
+
+@keyframes spin{
+    to{transform:translateX(15%) rotate(360deg)}
+}
+
+.record-name{
+    color:var(--gold-light);
+    font-size:16px;
+    margin-bottom:7px;
+    font-weight:normal;
+}
+
+.record-desc{
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.8;
+    min-height:38px;
+}
+
+.record-tag{
+    display:inline-block;
+    border:1px solid rgba(232,206,145,.3);
+    border-radius:20px;
+    padding:4px 10px;
+    color:var(--gold);
+    font-size:10px;
+    margin-top:10px;
+}
+
+/* 播放器 */
+
+.player{
+    margin-top:18px;
+    display:grid;
+    grid-template-columns:75px 1fr;
+    gap:18px;
+    align-items:center;
+}
+
+.player-cover{
+    width:75px;
+    height:75px;
+    object-fit:cover;
+    border-radius:9px;
+    border:1px solid rgba(232,206,145,.5);
+    background:#172342;
+}
+
+.player-info h3{
+    color:var(--gold);
+    font-weight:normal;
+    font-size:17px;
+    margin-bottom:5px;
+}
+
+.player-info p{color:var(--muted);font-size:11px}
+
+.progress-area{margin-top:13px}
+
+.progress{
+    width:100%;
+    height:5px;
+    border-radius:10px;
+    background:rgba(255,255,255,.15);
+    overflow:hidden;
+    cursor:pointer;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    background:var(--gold);
+    border-radius:10px;
+}
+
+.time-row{
+    display:flex;
+    justify-content:space-between;
+    color:var(--muted);
+    font-size:10px;
+    margin-top:6px;
+}
+
+.player-controls{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:16px;
+    margin-top:15px;
+}
+
+.player-controls button{
+    border:none;
+    background:transparent;
+    color:var(--gold-light);
+    font-size:20px;
+    cursor:pointer;
+    padding:5px;
+}
+
+.player-controls .play-btn{
+    width:43px;
+    height:43px;
+    border-radius:50%;
+    background:var(--gold);
+    color:#10172c;
+    font-size:18px;
+}
+
+.player-hint{
+    text-align:center;
+    color:var(--muted);
+    font-size:10px;
+    margin-top:18px;
+    line-height:1.8;
+}
+
+.empty-note{
+    color:var(--muted);
+    text-align:center;
+    font-size:12px;
+    margin-top:12px;
+}
+
+/* 底部 */
+
+footer{
+    text-align:center;
+    padding:40px 10px 55px;
+    color:var(--muted);
+    font-size:11px;
+    letter-spacing:3px;
+}
+
+footer span{
+    display:block;
+    color:var(--gold);
+    font-size:18px;
+    margin-bottom:12px;
+}
+
+/* 手机适配 */
+
+@media(max-width:700px){
+    .hero{grid-template-columns:1fr;gap:22px}
+    .avatar-frame{width:min(75%,300px);margin:auto}
+    .hero-info{text-align:center}
+    .outfit-grid{grid-template-columns:repeat(2,1fr)}
+    .daily-grid{grid-template-columns:1fr}
+    .gallery{grid-template-columns:repeat(2,1fr)}
+    .record-card{flex-basis:210px}
+    .panel{padding:18px}
+}
+
+@media(max-width:380px){
+    .info-grid{grid-template-columns:1fr 1fr}
+    .route-list{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<div class="stars"></div>
+
+<div class="page">
+
+<header>
+    <div class="brand">✦ AUSTRALIS ✦</div>
+    <h1>My Sky World</h1>
+    <p class="subtitle">A LITTLE UNIVERSE IN THE SKY</p>
+</header>
+
+<nav>
+    <a href="#about">光崽档案</a>
+    <a href="#outfits">装扮收藏</a>
+    <a href="#daily">光遇日常</a>
+    <a href="#routes">跑图记录</a>
+    <a href="#gallery">天空相册</a>
+    <a href="#music">音乐收藏</a>
+</nav>
+
+<section id="about">
+    <div class="section-title">
+        <h2>✧ 光崽档案 ✧</h2>
+        <p>ABOUT MY LITTLE LIGHT</p>
+    </div>
+
+    <div class="panel hero">
+        <div class="avatar-frame">
+            <img src="bx.jpg" alt="我的光崽"
+                 onerror="this.style.opacity='.25'">
+        </div>
+
+        <div class="hero-info">
+            <h2>Australis</h2>
+            <p class="english">MY LITTLE LIGHT</p>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span>生日 BIRTHDAY</span>
+                    <strong>12/18</strong>
+                </div>
+                <div class="info-item">
+                    <span>所在服务器 SERVER</span>
+                    <strong>国际服</strong>
+                </div>
+                <div class="info-item">
+                    <span>国家 COUNTRY</span>
+                    <strong>马来西亚</strong>
+                </div>
+                <div class="info-item">
+                    <span>常用装扮 OUTFIT</span>
+                    <strong>白枭，正太，花环，巫师</strong>
+                </div>
+                <div class="info-item">
+                    <span>喜欢的地图 FAVORITE</span>
+                    <strong>暴风眼和霞谷</strong>
+                </div>
+                <div class="info-item">
+                    <span>日常活动 ACTIVITY</span>
+                    <strong>跑图 · 弹琴</strong>
+                </div>
+            </div>
+
+            <p class="motto">“自由地飞翔 ✧”</p>
+        </div>
+    </div>
+</section>
+
+<section id="outfits">
+    <div class="section-title">
+        <h2>✧ 装扮收藏 ✧</h2>
+        <p>MY FAVORITE LOOKS</p>
+    </div>
+
+    <div class="outfit-grid">
+        <div class="outfit">
+            <img src="bx.jpg" alt="白枭">
+            <h3>白枭</h3>
+            <p>Favorite Look</p>
+        </div>
+        <div class="outfit">
+            <img src="zt.jpg" alt="白鸟">
+            <h3>正太</h3>
+            <p>Classic Style</p>
+        </div>
+        <div class="outfit">
+            <img src="g.jpg" alt="巫师">
+            <h3>巫师</h3>
+            <p>My Collection</p>
+        </div>
+        <div class="outfit">
+            <img src="sky.jpg" alt="其他装扮">
+            <h3>花环</h3>
+            <p>Another Favorite</p>
+        </div>
+    </div>
+</section>
+
+<section id="daily">
+    <div class="section-title">
+        <h2>✧ 光遇日常 ✧</h2>
+        <p>LITTLE MOMENTS</p>
+    </div>
+
+    <div class="daily-grid">
+        <div class="daily-card">
+            <div class="symbol">✧</div>
+            <h3>日常跑图</h3>
+            <p>超高效率，挂馒头，海胆，试炼</p>
+        </div>
+        <div class="daily-card">
+            <div class="symbol">♫</div>
+            <h3>弹琴合奏</h3>
+            <p>用不同乐器表现出想带出的情感</p>
+        </div>
+        <div class="daily-card">
+            <div class="symbol">☾</div>
+            <h3>好友时光</h3>
+            <p>和朋友一起聊天、玩耍、看风景。</p>
+        </div>
+    </div>
+</section>
+
+<section id="routes">
+    <div class="section-title">
+        <h2>✧ 跑图记录 ✧</h2>
+        <p>MY DAILY ROUTES</p>
+    </div>
+
+    <div class="panel">
+        <div class="route-list">
+            <div class="route"><span>晨岛</span><strong>约 7 min</strong></div>
+            <div class="route"><span>云野</span><strong>约 15 min</strong></div>
+            <div class="route"><span>雨林</span><strong>约 10 min</strong></div>
+            <div class="route"><span>霞谷</span><strong>约 15 min</strong></div>
+            <div class="route"><span>禁阁</span><strong>约 6 min</strong></div>
+            <div class="route"><span>试炼</span><strong>约 15 min</strong></div>
+        </div>
+    </div>
+</section>
+
+<section id="gallery">
+    <div class="section-title">
+        <h2>✧ 相册 ✧</h2>
+        <p>MEMORIES IN THE SKY</p>
+    </div>
+
+    <div class="gallery">
+        <img src="keai.jpg" alt="天空回忆">
+        <img src="niu.jpg" alt="天空回忆">
+        <img src="g.jpg" alt="天空回忆">
+        <img src="blue.png" alt="天空回忆">
+        <img src="aaa.jpg" alt="天空回忆">
+        <img src="hao.png" alt="天空回忆">
+    </div>
+</section>
+
+<section id="music">
+    <div class="section-title">
+        <h2>✧ 音乐收藏 ✧</h2>
+        <p>MY LITTLE RECORD COLLECTION</p>
+    </div>
+
+    <p class="music-intro">
+        每一段旋律，都是留下来的小小纪念。<br>
+        MY OWN MUSIC · MY OWN MEMORIES
+    </p>
+
+    <div class="panel">
+        <div class="record-shelf" id="recordShelf"></div>
+
+        <div class="player">
+            <img class="player-cover" id="playerCover"
+                 src="yu.jpg" alt="唱片封面"
+                 onerror="this.style.opacity='.2'">
+
+            <div class="player-info">
+                <h3 id="playerTitle">sacred play secret place</h3>
+                <p id="playerDesc">合奏1</p>
+
+                <div class="progress-area">
+                    <div class="progress" id="progress">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+
+                    <div class="time-row">
+                        <span id="currentTime">00:00</span>
+                        <span id="duration">00:00</span>
+                    </div>
+                </div>
+
+                <div class="player-controls">
+                    <button id="prevBtn" aria-label="上一首">⏮</button>
+                    <button class="play-btn" id="playBtn"
+                            aria-label="播放">▶</button>
+                    <button id="nextBtn" aria-label="下一首">⏭</button>
+                </div>
+            </div>
+        </div>
+
+        <p class="player-hint">
+            点击上方唱片选择作品 · 左右滑动查看更多<br>
+            AUDIO FILES · PERSONAL RECORDINGS
+        </p>
+        <p class="empty-note" id="audioStatus"></p>
+    </div>
+</section>
+
+<footer>
+    <span>✦ AUSTRALIS ✦</span>
+    MY LITTLE UNIVERSE IN THE SKY
+</footer>
+
+</div>
+
+<audio id="audioPlayer" preload="metadata"></audio>
+
+<script>
+
+/* ===================================
+   我的录音收藏
+   文件直接放在 AUSTRALIS 主文件夹
+=================================== */
+
+const tracks = [
+    {
+        title: "sacred play secret place",
+        desc: "合奏1",
+        tag: "MY RECORDING",
+        cover: "yu.jpg",
+        audio: "spsp.aac"
+    }
+];
+
+
+/* ===================================
+   播放器功能
+=================================== */
+
+const shelf = document.getElementById("recordShelf");
+const audio = document.getElementById("audioPlayer");
+
+const playerTitle = document.getElementById("playerTitle");
+const playerDesc = document.getElementById("playerDesc");
+const playerCover = document.getElementById("playerCover");
+const playBtn = document.getElementById("playBtn");
+const progress = document.getElementById("progress");
+const progressFill = document.getElementById("progressFill");
+const currentTimeText = document.getElementById("currentTime");
+const durationText = document.getElementById("duration");
+const audioStatus = document.getElementById("audioStatus");
+
+let currentIndex = 0;
+let isPlaying = false;
+
+function renderRecords(){
+    shelf.innerHTML = "";
+
+    tracks.forEach((track,index)=>{
+        const card = document.createElement("div");
+        card.className = "record-card";
+        card.dataset.index = index;
+
+        card.innerHTML = `
+            <div class="album-stage">
+                <div class="vinyl"></div>
+                <img class="album-cover"
+                     src="${track.cover}"
+                     alt="唱片封面"
+                     onerror="this.style.display='none'">
+            </div>
+            <h3 class="record-name">${track.title}</h3>
+            <p class="record-desc">${track.desc}</p>
+            <span class="record-tag">${track.tag}</span>
+        `;
+
+        card.addEventListener("click",()=>{
+            selectTrack(index,true);
+        });
+
+        shelf.appendChild(card);
+    });
+
+    updateCards();
+}
+
+function selectTrack(index,autoPlay){
+    if(index<0||index>=tracks.length)return;
+
+    currentIndex=index;
+    const track=tracks[index];
+
+    audio.pause();
+    audio.src=track.audio;
+    audio.load();
+
+    playerTitle.textContent=track.title;
+    playerDesc.textContent=track.desc;
+    playerCover.src=track.cover;
+
+    progressFill.style.width="0%";
+    currentTimeText.textContent="00:00";
+    durationText.textContent="00:00";
+    audioStatus.textContent="";
+
+    isPlaying=false;
+    playBtn.textContent="▶";
+
+    updateCards();
+
+    if(autoPlay)playAudio();
+}
+
+function updateCards(){
+    document.querySelectorAll(".record-card").forEach((card,index)=>{
+        card.classList.toggle("active",index===currentIndex);
+        card.classList.toggle(
+            "playing",
+            index===currentIndex&&isPlaying
+        );
+    });
+}
+
+async function playAudio(){
+    if(!audio.src)return;
+
+    try{
+        await audio.play();
+        isPlaying=true;
+        playBtn.textContent="Ⅱ";
+        audioStatus.textContent="";
+        updateCards();
+    }catch(error){
+        isPlaying=false;
+        playBtn.textContent="▶";
+        updateCards();
+        audioStatus.textContent=
+        "无法播放：请检查音频文件是否放在 AUSTRALIS 文件夹中，且文件名正确。";
+    }
+}
+
+playBtn.addEventListener("click",()=>{
+    if(audio.paused){
+        playAudio();
+    }else{
+        audio.pause();
+        isPlaying=false;
+        playBtn.textContent="▶";
+        updateCards();
+    }
+});
+
+document.getElementById("prevBtn").addEventListener("click",()=>{
+    if(tracks.length<=1)return;
+    const index=(currentIndex-1+tracks.length)%tracks.length;
+    selectTrack(index,true);
+});
+
+document.getElementById("nextBtn").addEventListener("click",()=>{
+    if(tracks.length<=1)return;
+    const index=(currentIndex+1)%tracks.length;
+    selectTrack(index,true);
+});
+
+function formatTime(seconds){
+    if(!Number.isFinite(seconds))return "00:00";
+    const min=Math.floor(seconds/60);
+    const sec=Math.floor(seconds%60);
+    return String(min).padStart(2,"0")+":"+
+           String(sec).padStart(2,"0");
+}
+
+audio.addEventListener("timeupdate",()=>{
+    if(!audio.duration)return;
+
+    const percent=(audio.currentTime/audio.duration)*100;
+    progressFill.style.width=percent+"%";
+
+    currentTimeText.textContent=formatTime(audio.currentTime);
+    durationText.textContent=formatTime(audio.duration);
+});
+
+progress.addEventListener("click",(event)=>{
+    if(!audio.duration)return;
+
+    const rect=progress.getBoundingClientRect();
+    const percent=Math.max(0,Math.min(1,
+        (event.clientX-rect.left)/rect.width
+    ));
+
+    audio.currentTime=percent*audio.duration;
+});
+
+audio.addEventListener("loadedmetadata",()=>{
+    durationText.textContent=formatTime(audio.duration);
+});
+
+audio.addEventListener("error",()=>{
+    audioStatus.textContent=
+    "音频加载失败。请确认 spsp.aac 与 sky.html 在同一个文件夹中；如果路径正确仍无法播放，可能是浏览器不支持该音频编码。";
+});
+
+audio.addEventListener("ended",()=>{
+    if(tracks.length<=1){
+        isPlaying=false;
+        playBtn.textContent="▶";
+        updateCards();
+        return;
+    }
+
+    const index=(currentIndex+1)%tracks.length;
+    selectTrack(index,true);
+});
+
+audio.addEventListener("pause",()=>{
+    isPlaying=false;
+    playBtn.textContent="▶";
+    updateCards();
+});
+
+audio.addEventListener("play",()=>{
+    isPlaying=true;
+    playBtn.textContent="Ⅱ";
+    updateCards();
+});
+
+renderRecords();
+
+if(tracks.length>0){
+    selectTrack(0,false);
+}
+
+</script>
+</body>
+</html>

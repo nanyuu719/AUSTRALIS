@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Australis · Message</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --gold:#e8ce91;
+    --gold-light:#f5e8c5;
+    --blue:#8caedc;
+}
+
+body{
+    min-height:100vh;
+    background:#02030b;
+    color:#eee8dc;
+    font-family:Georgia,"Noto Serif SC",serif;
+    overflow-x:hidden;
+}
+
+/* 星空背景 */
+.galaxy{
+    position:fixed;
+    inset:0;
+    z-index:-3;
+    background:
+        linear-gradient(rgba(2,3,11,.48),rgba(2,3,11,.72)),
+        url("blue.png") center/cover no-repeat;
+    filter:brightness(.55) saturate(.9);
+    animation:zoom 30s ease-in-out infinite alternate;
+}
+
+@keyframes zoom{
+    from{transform:scale(1)}
+    to{transform:scale(1.08)}
+}
+
+.mist{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    pointer-events:none;
+    background:
+        radial-gradient(ellipse at 20% 35%,rgba(60,105,175,.18),transparent 55%),
+        radial-gradient(ellipse at 80% 70%,rgba(31,65,125,.2),transparent 55%);
+}
+
+.shade{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background:linear-gradient(
+        180deg,
+        rgba(1,3,12,.25),
+        rgba(1,3,12,.55)
+    );
+}
+
+/* 星星 */
+.stars{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    overflow:hidden;
+}
+
+.stars span{
+    position:absolute;
+    width:2px;
+    height:2px;
+    border-radius:50%;
+    background:#fff0c8;
+    box-shadow:0 0 8px #e8ce91;
+    animation:twinkle 3s infinite alternate;
+}
+
+@keyframes twinkle{
+    from{opacity:.2;transform:scale(.7)}
+    to{opacity:1;transform:scale(1.5)}
+}
+
+/* 页面 */
+.page{
+    position:relative;
+    z-index:1;
+    max-width:1100px;
+    margin:auto;
+    padding:35px 35px 70px;
+}
+
+/* 顶部 */
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-bottom:20px;
+    border-bottom:1px solid rgba(232,206,145,.25);
+}
+
+.logo{
+    color:var(--gold);
+    letter-spacing:5px;
+    font-size:15px;
+}
+
+.back{
+    color:#c8c1b3;
+    text-decoration:none;
+    font-size:12px;
+    letter-spacing:2px;
+    transition:.3s;
+}
+
+.back:hover{
+    color:var(--gold);
+}
+
+/* 标题 */
+.hero{
+    text-align:center;
+    padding:75px 15px 45px;
+}
+
+.small-title{
+    color:#a9bad3;
+    letter-spacing:6px;
+    font-size:11px;
+    margin-bottom:20px;
+}
+
+.hero h1{
+    color:var(--gold-light);
+    font-size:clamp(32px,6vw,54px);
+    font-weight:normal;
+    letter-spacing:8px;
+    text-shadow:0 0 25px rgba(232,206,145,.25);
+}
+
+.hero .line{
+    width:65px;
+    height:1px;
+    background:var(--gold);
+    margin:25px auto;
+}
+
+.hero p{
+    color:#aaaebe;
+    font-size:13px;
+    letter-spacing:2px;
+    line-height:2;
+}
+
+/* 信件装饰 */
+.envelope{
+    text-align:center;
+    margin:0 auto 30px;
+    color:var(--gold);
+}
+
+.envelope .symbol{
+    font-size:34px;
+    text-shadow:0 0 20px rgba(232,206,145,.5);
+}
+
+.envelope .caption{
+    margin-top:12px;
+    color:#c7b990;
+    font-size:11px;
+    letter-spacing:4px;
+}
+
+/* 留言区域 */
+.guestbook{
+    max-width:850px;
+    margin:0 auto;
+    padding:22px;
+    background:rgba(8,13,29,.76);
+    border:1px solid rgba(232,206,145,.35);
+    border-radius:14px;
+    box-shadow:
+        0 0 35px rgba(37,67,119,.16),
+        inset 0 0 25px rgba(232,206,145,.025);
+    backdrop-filter:blur(12px);
+}
+
+.guestbook-title{
+    text-align:center;
+    color:var(--gold);
+    font-size:13px;
+    letter-spacing:4px;
+    margin-bottom:20px;
+}
+
+.guestbook iframe{
+    display:block;
+    width:100%;
+    min-height:480px;
+    border:1px solid rgba(232,206,145,.2);
+    border-radius:8px;
+    background:#fff;
+}
+
+/* 底部 */
+footer{
+    text-align:center;
+    margin-top:55px;
+    color:#777f91;
+    font-size:10px;
+    letter-spacing:3px;
+    line-height:2.5;
+}
+
+footer span{
+    color:var(--gold);
+}
+
+@media(max-width:600px){
+    .page{
+        padding:22px 15px 45px;
+    }
+
+    header{
+        padding-bottom:15px;
+    }
+
+    .logo{
+        font-size:12px;
+        letter-spacing:3px;
+    }
+
+    .hero{
+        padding:60px 10px 35px;
+    }
+
+    .hero h1{
+        letter-spacing:5px;
+    }
+
+    .guestbook{
+        padding:12px;
+    }
+
+    .guestbook iframe{
+        min-height:500px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="galaxy"></div>
+<div class="mist"></div>
+<div class="shade"></div>
+
+<div class="stars" id="stars"></div>
+
+<div class="page">
+
+<header>
+    <div class="logo">AUSTRALIS ✦</div>
+    <a class="back" href="index.html">← BACK HOME</a>
+</header>
+
+<section class="hero">
+    <div class="small-title">A LITTLE PLACE FOR YOUR WORDS</div>
+
+    <h1>Message</h1>
+
+    <div class="line"></div>
+
+    <p>
+        留下一句话吧。<br>
+        无论是问候、分享，还是一封小小的信。
+    </p>
+</section>
+
+<div class="envelope">
+    <div class="symbol">✉</div>
+    <div class="caption">LETTERS FROM YOU</div>
+</div>
+
+<section class="guestbook">
+
+    <div class="guestbook-title">
+        ✦ GUESTBOOK ✦
+    </div>
+
+    <!-- UltraGuest 留言板 -->
+    <iframe
+        src="https://www.ultraguest.com/embed/xm5qrb7m"
+        title="Australis Guestbook"
+        width="100%"
+        height="480"
+        loading="lazy"
+        referrerpolicy="no-referrer">
+    </iframe>
+
+</section>
+
+<footer>
+    AUSTRALIS · MESSAGE
+    <br>
+    <span>✦</span> THANK YOU FOR BEING HERE <span>✦</span>
+</footer>
+
+</div>
+
+<script>
+const stars=document.getElementById("stars");
+
+for(let i=0;i<75;i++){
+    const star=document.createElement("span");
+    star.style.left=Math.random()*100+"%";
+    star.style.top=Math.random()*100+"%";
+    star.style.animationDelay=Math.random()*4+"s";
+    star.style.animationDuration=(2+Math.random()*3)+"s";
+    stars.appendChild(star);
+}
+</script>
+
+</body>
+</html>
